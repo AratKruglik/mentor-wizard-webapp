@@ -114,6 +114,14 @@ services:
             timeout: 10s
             retries: 20
 
+    mailpit:
+        image: 'axllent/mailpit:latest'
+        ports:
+            - '${FORWARD_MAILPIT_PORT:-1025}:1025'
+            - '${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025'
+        networks:
+            - mw-webserver-network
+
 volumes:
     db_data:
         driver: local
