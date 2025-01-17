@@ -63,6 +63,16 @@ services:
 #            timeout: 10s
 #            retries: 20
 
+    workers:
+        <<: *app
+        container_name: mw-worker
+        environment:
+            COMMAND: php artisan queue:work
+            PROCESS: horizon
+        networks:
+            - mw-db-network
+            - mw-redis-network
+
     schedule:
         <<: *app
         container_name: mw-schedule
