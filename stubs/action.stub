@@ -1,0 +1,15 @@
+<?php
+
+namespace {{ namespace }};
+
+use Lorisleiva\Actions\Concerns\AsController;
+
+class {{ class }}
+{
+    use AsController;
+
+    public function handle()
+    {
+        // ...
+    }
+}
