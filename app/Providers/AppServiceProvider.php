@@ -22,8 +22,22 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        DB::prohibitDestructiveCommands($this->app->isProduction());
-        Model::shouldBeStrict();
+        $this->configModels();
+        $this->configDatabase();
+
         URL::forceHttps();
+    }
+
+    private function configModels(): void
+    {
+        Model::shouldBeStrict();
+        Model::preventLazyLoading();
+        Model::preventAccessingMissingAttributes();
+        Model::preventSilentlyDiscardingAttributes();
+    }
+
+    private function configDatabase(): void
+    {
+        DB::prohibitDestructiveCommands($this->app->isProduction());
     }
 }
