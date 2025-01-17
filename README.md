@@ -56,15 +56,15 @@ docker compose exec -it app cp .env.example .env
 docker compose exec -it app php artisan key:generate
 ```
 
-### 5. Залінкувати storage
+### 6. Запустіть міграцію
 
 Виконайте команду:
 
 ```bash
-docker compose exec -it app php artisan storage:link
+docker compose exec -it app php artisan migrate
 ```
 
-### 6. Встановіть залежності NodeJS
+### 7. Встановіть залежності NodeJS
 
 Виконайте команду:
 
@@ -72,7 +72,7 @@ docker compose exec -it app php artisan storage:link
 docker compose exec -it app yarn install
 ```
 
-### 7. Компіляція frontend
+### 8. Компіляція frontend
 
 Виконайте команду:
 
