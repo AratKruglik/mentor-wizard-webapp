@@ -90,6 +90,33 @@ docker compose exec -it app php artisan test
 
 Або скористайтеся `pest` для додаткових інструментів тестування.
 
+## DDEV Інсталяція
+
+### Вимоги
+
+- [DDEV](//ddev.readthedocs.io/en/stable/users/install/ddev-installation)
+- [Docker Compose](//docs.docker.com/compose/install)
+
+### Інсталяція
+
+- Запуск DDEV. Це збілдить всі неодхідні конетйнери згідно налаштувань у
+  `.ddev/config.yaml`
+
+    ```sh
+    ddev start
+    ```
+
+- Згенеруйте ключ для Laravel та запустіть міграції:
+
+    ```sh
+    ddev artisan key:generate; ddev artisan migrate
+    ```
+
+- Встановлення `Node.js` залежностей:
+    ```
+    ddev [npm|yarn|pnpm] install
+    ```
+
 ## Ліцензія
 
 Цей проєкт ліцензований за ліцензією [MIT](https://opensource.org/licenses/MIT).
