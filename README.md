@@ -56,6 +56,14 @@ docker compose exec -it app cp .env.example .env
 docker compose exec -it app php artisan key:generate
 ```
 
+### 5. Залінкувати storage
+
+Виконайте команду:
+
+```bash
+docker compose exec -it app php artisan storage:link
+```
+
 ### 6. Встановіть залежності NodeJS
 
 Виконайте команду:
