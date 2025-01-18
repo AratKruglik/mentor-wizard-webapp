@@ -53,7 +53,7 @@ docker compose exec -it app cp .env.example .env
 Виконайте команду:
 
 ```bash
-docker compose exec -it app php artisan key:generate
+docker compose exec app php artisan key:generate
 ```
 
 ### 6. Запустіть міграцію
@@ -61,7 +61,7 @@ docker compose exec -it app php artisan key:generate
 Виконайте команду:
 
 ```bash
-docker compose exec -it app php artisan migrate
+docker compose exec app php artisan migrate
 ```
 
 ### 7. Встановіть залежності NodeJS
@@ -69,7 +69,7 @@ docker compose exec -it app php artisan migrate
 Виконайте команду:
 
 ```bash
-docker compose exec -it app yarn install
+docker compose exec app yarn install
 ```
 
 ### 8. Компіляція frontend
@@ -77,18 +77,27 @@ docker compose exec -it app yarn install
 Виконайте команду:
 
 ```bash
-docker compose exec -it app yarn run dev
+docker compose exec app yarn run dev
 ```
 
 ## Тестування
 
+### 1. Запуск тестів
+
 Щоб запустити тестування, виконайте:
 
 ```bash
-docker compose exec -it app php artisan test
+docker compose exec app php artisan test
 ```
 
-Або скористайтеся `pest` для додаткових інструментів тестування.
+### 2. Запуск аналізатора коду PHPStan
+
+Щоб запустити аналізатор, виконайте:
+
+```bash
+docker compose exec app ./vendor/bin/phpstan analyse --memory-limit=2G
+```
+
 
 ## DDEV Інсталяція
 
