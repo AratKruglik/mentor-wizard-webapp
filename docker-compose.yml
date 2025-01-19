@@ -1,6 +1,6 @@
 services:
     db:
-        image: postgis/postgis:17-3.5-alpine
+        image: &db-image postgres:17-alpine3.20
         restart: unless-stopped
         container_name: mw-db
         environment:
@@ -19,6 +19,18 @@ services:
             timeout: 10s
             retries: 20
 
+    db-test:
+        image: *db-image
+        container_name: mw-db-test
+        command: postgres -c 'max_connections=250' -c 'max_locks_per_transaction=128'
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: test_mw_db
+            POSTGRES_USER: test_mw_user
+            POSTGRES_PASSWORD: test_mw_user_password
+        networks:
+            - mw-db-network
+
     app: &app
         build:
             context: ./
@@ -27,8 +39,9 @@ services:
         restart: unless-stopped
         container_name: mw-app
         environment:
-            COMMAND: php artisan octane:start --watch --host=0.0.0.0 --port=8000
+            COMMAND: php artisan octane:start --watch --host=0.0.0.0 --port=8000 --verbose
             PROCESS: app
+            XDEBUG_MODE: debug,coverage
         depends_on:
             db:
                 condition: service_healthy
@@ -47,21 +60,6 @@ services:
             interval: 5s
             timeout: 10s
             retries: 20
-
-#    horizon:
-#        <<: *app
-#        container_name: mw-horizon
-#        environment:
-#            COMMAND: php artisan horizon
-#            PROCESS: horizon
-#        networks:
-#            - mw-db-network
-#            - mw-redis-network
-#        healthcheck:
-#            test: php artisan horizon:status | grep -q 'is running'  # TODO try spatie LARAVEL-HEALTH
-#            interval: 5s
-#            timeout: 10s
-#            retries: 20
 
     workers:
         <<: *app
@@ -144,7 +142,7 @@ volumes:
         name: mw_app_composer_data
     mw_app_npm_data:
         driver: local
-        name: mw_app_composer_data
+        name: mw_app_npm_data
 
 networks:
     mw-db-network:
