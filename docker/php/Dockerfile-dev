@@ -1,18 +1,18 @@
-FROM php:8.4.2-cli-alpine3.20
+FROM php:8.4.3-cli-alpine3.20
 
-COPY --from=composer:2.7.4 /usr/bin/composer /usr/bin/
+COPY --from=composer:2.8.4 /usr/bin/composer /usr/bin/
 
 RUN \
     set -ex && \
     apk update && \
     apk add --no-cache libstdc++ libpq && \
-    apk add --no-cache --virtual .build-deps $PHPIZE_DEPS curl-dev linux-headers postgresql-dev openssl-dev pcre-dev pcre2-dev zlib-dev && \
+    apk add --no-cache --virtual .build-deps $PHPIZE_DEPS curl-dev linux-headers postgresql-dev openssl-dev pcre-dev pcre2-dev zlib-dev libzip-dev && \
+    apk add --no-cache libzip libzip-dev && \
     apk add --no-cache supervisor && \
-    apk add --no-cache supercronic && \
-#    apk add --no-cache certbot && \
     pecl channel-update pecl.php.net && \
-    docker-php-ext-install sockets && \
-    pecl install redis &&  \
+    docker-php-ext-configure zip && \
+    docker-php-ext-install sockets zip && \
+    pecl install redis && \
     docker-php-ext-enable redis && \
     pecl install xdebug && \
     docker-php-ext-enable xdebug && \
@@ -33,8 +33,6 @@ RUN \
 
 RUN apk add --no-cache nodejs npm git
 RUN npm install yarn -g
-
-#RUN certbot --staging certonly --standalone -d mentor-wizard.com --email mentor.wizard.ua@gmail.com --agree-tos --non-interactive
 
 COPY docker/php/supervisord/supervisord.conf /etc/
 

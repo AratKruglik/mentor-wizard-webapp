@@ -24,5 +24,5 @@ yarn-error.log
 .phpstorm.meta.php
 _ide_helper.php
 _ide_helper_models.php
-package-lcok.json
 .ddev
+package-lock.json
