@@ -9,6 +9,17 @@ host_db_port: '33371'
 nodejs_version: '22'
 webserver_type: nginx-fpm
 xdebug_enabled: false
+webimage_extra_packages:
+  - 'php${DDEV_PHP_VERSION}-swoole'
+web_extra_daemons:
+  - name: 'octane'
+    command: 'php artisan octane:start --watch --host=0.0.0.0 --port=8000'
+    directory: /var/www/html
+web_extra_exposed_ports:
+  - name: 'octane'
+    container_port: 8000
+    http_port: 8001
+    https_port: 8000
 hooks:
   pre-start:
     # Add redis, cron, pnpm and task to ddev if not already installed.
