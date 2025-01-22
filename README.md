@@ -32,7 +32,14 @@ cd mentor-wizard-webapp
 docker compose up -d
 ```
 
-### 3. Установка залежностей Laravel
+### 3. Встановлення локальних SSL сертифікатів
+
+```bash
+docker compose exec app openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ./docker/nginx/certs/ssl.key -out ./docker/nginx/certs/ssl.crt -subj "/C=UA/ST=Kyiv/L=Kyiv/O=Company/OU=IT Department/CN=localhost"
+
+```
+
+### 4. Установка залежностей Laravel
 
 Виконайте команду:
 
@@ -40,7 +47,7 @@ docker compose up -d
 docker compose exec -it app composer install
 ```
 
-### 4. Скопіюйте .env файл
+### 5. Скопіюйте .env файл
 
 Виконайте команду:
 
@@ -48,7 +55,7 @@ docker compose exec -it app composer install
 docker compose exec -it app cp .env.example .env
 ```
 
-### 5. Згенеруйте ключ для Laravel
+### 6. Згенеруйте ключ для Laravel
 
 Виконайте команду:
 
@@ -56,7 +63,7 @@ docker compose exec -it app cp .env.example .env
 docker compose exec app php artisan key:generate
 ```
 
-### 6. Запустіть міграцію
+### 7. Запустіть міграцію
 
 Виконайте команду:
 
@@ -64,7 +71,7 @@ docker compose exec app php artisan key:generate
 docker compose exec app php artisan migrate
 ```
 
-### 7. Встановіть залежності NodeJS
+### 8. Встановіть залежності NodeJS
 
 Виконайте команду:
 
@@ -72,7 +79,7 @@ docker compose exec app php artisan migrate
 docker compose exec app yarn install
 ```
 
-### 8. Компіляція frontend
+### 9. Компіляція frontend
 
 Виконайте команду:
 

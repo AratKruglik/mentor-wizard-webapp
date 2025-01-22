@@ -26,3 +26,4 @@ _ide_helper.php
 _ide_helper_models.php
 .ddev
 package-lock.json
+docker/nginx/certs/
