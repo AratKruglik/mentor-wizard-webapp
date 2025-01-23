@@ -10,7 +10,8 @@
         "laravel/framework": "^11.31",
         "laravel/octane": "^2.6",
         "laravel/tinker": "^2.9",
-        "lorisleiva/laravel-actions": "^2.8"
+        "lorisleiva/laravel-actions": "^2.8",
+        "spatie/laravel-permission": "^6.10"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.5",
