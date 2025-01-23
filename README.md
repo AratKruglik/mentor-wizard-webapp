@@ -89,6 +89,19 @@ docker compose exec app yarn run dev
 
 ## Тестування
 
+Перед початком тестування виконайте наступні налагтування.
+
+Скопіюйте `.env.example` в `.env.testing`.
+
+Замніть в `.env.testing` блок з підключенням до БД:
+```dotenv
+DB_CONNECTION=pgsql
+DB_HOST=mw-db-test
+DB_DATABASE=test_mw_db
+DB_USERNAME=test_mw_user
+DB_PASSWORD=test_mw_user_password
+```
+
 ### 1. Запуск тестів
 
 Щоб запустити тестування, виконайте:
@@ -105,6 +118,39 @@ docker compose exec app php artisan test
 docker compose exec app ./vendor/bin/phpstan analyse --memory-limit=2G
 ```
 
+### 3. Запуск тестів з coverage
+
+Щоб запустити тестування, виконайте:
+
+```bash
+docker compose exec app php artisan test --coverage
+```
+
+### 4. Мутаційні тести
+
+**Всі тести мають бути покриті мутаційними тестами.**
+
+Щоб додати мутаційні тести обовʼязково додавайте метод `covers(...)` до ваших тестів.
+
+Наприклад:
+```php
+covers(TodoController::class); // or mutates(TodoController::class);
+ 
+it('list todos', function () {
+    $this->getJson('/todos')->assertStatus(200);
+});
+```
+Детальніше [тут](https://pestphp.com/docs/mutation-testing).
+
+Щоб запустити тестування з мутаціями, виконайте:
+
+```bash
+docker compose exec app php artisan test --mutate
+```
+Або в паралельному режимі:
+```bash
+docker compose exec app php artisan test --mutate --parallel
+```
 
 ## DDEV Інсталяція
 
