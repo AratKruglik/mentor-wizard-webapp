@@ -10,6 +10,11 @@ parameters:
     # Level 10 is the highest level
     level: 5
 
+    scanFiles:
+        - _ide_helper.php
+        - _ide_helper_models.php
+        - .phpstorm.meta.php
+
 #    ignoreErrors:
 #        - '#PHPDoc tag @var#'
 #
