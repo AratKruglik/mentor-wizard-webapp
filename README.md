@@ -175,8 +175,17 @@ docker compose exec app php artisan test --mutate --parallel
     ```
 
 - Встановлення `Node.js` залежностей:
+
     ```
     ddev [npm|yarn|pnpm] install
+    ```
+
+### Тестування
+
+- Для запуску тестування потрбіно увімкнути XDebug (він вимкнений за замовчуванням):
+
+    ```sh
+    ddev xdedbug on
     ```
 
 ## Ліцензія

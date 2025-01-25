@@ -6,24 +6,26 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-        "php": "^8.3",
-        "laravel/framework": "^11.31",
+        "php": "^8.4",
+        "laravel/framework": "^11.40",
         "laravel/octane": "^2.6",
-        "laravel/tinker": "^2.9",
+        "laravel/tinker": "^2.10",
         "lorisleiva/laravel-actions": "^2.8",
+        "olssonm/l5-very-basic-auth": "^7.1",
+        "opcodesio/log-viewer": "^3.14",
         "spatie/laravel-permission": "^6.10"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.5",
-        "fakerphp/faker": "^1.23",
+        "fakerphp/faker": "^1.24",
         "larastan/larastan": "^3.0",
-        "laravel/pail": "^1.1",
-        "laravel/pint": "^1.13",
+        "laravel/pail": "^1.2",
+        "laravel/pint": "^1.20",
         "laravel/telescope": "^5.3",
         "mockery/mockery": "^1.6",
-        "nunomaduro/collision": "^8.1",
+        "nunomaduro/collision": "^8.6",
         "pestphp/pest": "^3.7",
-        "pestphp/pest-plugin-laravel": "^3.0",
+        "pestphp/pest-plugin-laravel": "^3.1",
         "wulfheart/laravel-actions-ide-helper": "^0.8.0"
     },
     "autoload": {
@@ -50,7 +52,7 @@
             "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+            "@php artisan vendor:publish --tag=laravel-assets --tag=log-viewer-assets --ansi --force",
             "@ide-helper"
         ],
         "post-root-package-install": [
@@ -62,10 +64,9 @@
             "@php artisan migrate --graceful --ansi"
         ],
         "post-install-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+            "@php artisan vendor:publish --tag=laravel-assets --tag=log-viewer-assets --ansi --force",
             "@ide-helper"
         ],
-
         "dev": [
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite"
