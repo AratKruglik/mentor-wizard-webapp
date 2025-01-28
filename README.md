@@ -32,7 +32,7 @@ cd mentor-wizard-webapp
 docker compose up -d
 ```
 
-### 3. Встановлення локальних SSL сертифікатів
+### ~~3. Встановлення локальних SSL сертифікатів~~
 
 ```bash
 docker compose exec app openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ./docker/nginx/certs/ssl.key -out ./docker/nginx/certs/ssl.crt -subj "/C=UA/ST=Kyiv/L=Kyiv/O=Company/OU=IT Department/CN=localhost"
@@ -89,7 +89,7 @@ docker compose exec app yarn run dev
 
 ## Тестування
 
-Перед початком тестування виконайте наступні налагтування.
+Перед початком тестування виконайте наступні налаштування.
 
 Скопіюйте `.env.example` в `.env.testing`.
 
