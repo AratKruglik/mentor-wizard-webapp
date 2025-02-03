@@ -71,4 +71,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(MentorReview::class, 'menti_id');
     }
+
+    public function mentorPrograms(): HasMany
+    {
+        return $this->hasMany(MentorProgram::class, 'mentor_id');
+    }
 }
