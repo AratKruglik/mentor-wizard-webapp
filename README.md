@@ -188,6 +188,25 @@ docker compose exec app php artisan test --mutate --parallel
     ddev xdedbug on
     ```
 
+### Назви гілок
+Вимоги описані у файлі
+
+```
+.validate-branch-namerc.json
+```
+Автовалідація імен гілок Git перед пушем їх у віддалений репозиторій
+[validate-branch-name](https://www.npmjs.com/package/validate-branch-name
+) package
+
+### Конвенція для комітів
+Кожне повідомлення коміту має відповідати [конвенції комітів](https://www.conventionalcommits.org/).
+
+Автоматична перевірка повідомлень комітів виконується через `commit-msg` git-хук. Усі налаштування описані у файлі
+
+## Мерж-коміт із напівлінійною історією
+
+Використовуйте лінійну історію git. Детальніше читайте у [документації](https://docs.gitlab.com/ee/user/project/merge_requests/methods/#merge-commit-with-semi-linear-history).
+
 ## Ліцензія
 
 Цей проєкт ліцензований за ліцензією [MIT](https://opensource.org/licenses/MIT).
