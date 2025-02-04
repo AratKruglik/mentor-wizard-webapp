@@ -16,5 +16,5 @@ test('success create user test', function () {
         'email' => 'test@example.com',
     ]);
 
-    $this->assertTrue($user->hasRole(RoleEnum::USER->value));
+    expect($user->hasRole(RoleEnum::USER->value))->toBeTrue();
 });

@@ -15,8 +15,10 @@ parameters:
         - _ide_helper_models.php
         - .phpstorm.meta.php
 
-#    ignoreErrors:
-#        - '#PHPDoc tag @var#'
+    ignoreErrors:
+        -
+          message: '#Call to an undefined static method#'
+          path: app/Providers/AppServiceProvider.php
 #
 #    excludePaths:
 #        - ./*/*/FileToBeExcluded.php
