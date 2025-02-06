@@ -13,7 +13,10 @@
         "lorisleiva/laravel-actions": "^2.8",
         "olssonm/l5-very-basic-auth": "^7.1",
         "opcodesio/log-viewer": "^3.14",
-        "spatie/laravel-permission": "^6.10"
+        "spatie/laravel-permission": "^6.10",
+        "laravel/socialite": "^5.16",
+        "socialiteproviders/apple": "^5.6",
+        "socialiteproviders/google": "^4.1"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.5",

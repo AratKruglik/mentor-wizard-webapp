@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 #[UseFactory(MentorProgramFactory::class)]
+/**
+ * @mixin IdeHelperMentorProgram
+ */
 class MentorProgram extends Model
 {
     /** @use HasFactory<MentorProgramFactory> */

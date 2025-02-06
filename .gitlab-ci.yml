@@ -140,7 +140,7 @@ tests:
     - echo "Code coverage"
     - ./vendor/bin/pest --coverage
     - echo "Run Pest Mutation tests"
-    - ./vendor/bin/pest --mutate --parallel
+    - ./vendor/bin/pest --mutate --parallel --min=100
   coverage: '/^\s*Lines:\s*\d+.\d+\%/'
   dependencies:
     - composer
