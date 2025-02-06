@@ -12,7 +12,7 @@ test('success create user test', function () {
     Role::create(['name' => RoleEnum::USER, 'guard_name' => RoleGuardEnum::USER]);
 
     $user = User::factory()->create([
-        'name' => 'Test User',
+        'username' => 'Test User',
         'email' => 'test@example.com',
     ]);
 
