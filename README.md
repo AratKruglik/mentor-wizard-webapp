@@ -176,8 +176,8 @@ docker compose exec app php artisan test --mutate --parallel
 
 - Встановлення `Node.js` залежностей:
 
-    ```
-    ddev [npm|yarn|pnpm] install
+    ```sh
+    ddev yarn install
     ```
 
 ### Тестування

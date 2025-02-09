@@ -3,7 +3,7 @@ type: laravel
 docroot: public
 database:
   type: postgres
-  version: 17
+  version: '17'
 php_version: '8.4'
 host_db_port: '33371'
 nodejs_version: '22'
@@ -22,13 +22,13 @@ web_extra_exposed_ports:
     https_port: 8000
 hooks:
   pre-start:
-    # Add redis, cron, pnpm and task to ddev if not already installed.
+    # Add redis, cron and task to ddev if not already installed.
     - exec-host: |
         ddev add-on list --installed | grep -q 'ddev/ddev-cron' || ddev add-on get ddev/ddev-cron  > /dev/null
         ddev add-on list --installed | grep -q 'ddev/ddev-redis' || ddev add-on get ddev/ddev-redis > /dev/null
-        ddev add-on list --installed | grep -q 'envsa/ddev-pnpm' || ddev add-on get envsa/ddev-pnpm > /dev/null
         ddev add-on list --installed | grep -q 'gebruederheitz/ddev-taskfile' || ddev add-on get gebruederheitz/ddev-taskfile > /dev/null
   post-start:
     - composer: install
+    - exec: yarn install
   post-import-db:
     - exec: php artisan migrate --force --ansi
