@@ -29,4 +29,9 @@
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="LOG_CHANNEL" value="stderr"/>
     </php>
+     <coverage>
+        <report>
+            <html outputDirectory="var/coverage"/>
+        </report>
+     </coverage>
 </phpunit>
