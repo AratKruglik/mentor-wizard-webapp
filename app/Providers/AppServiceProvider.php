@@ -2,11 +2,14 @@
 
 namespace App\Providers;
 
+use App\Enums\RoleEnum;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 use App\Providers\TelescopeServiceProvider as VendorTelescopeServiceProvider;
+use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,6 +33,10 @@ class AppServiceProvider extends ServiceProvider
         $this->configDatabase();
 
         URL::forceHttps();
+
+        Gate::define('viewPulse', function (User $user) {
+            return $user->hasAnyRole([RoleEnum::ADMIN, RoleEnum::SUPER_ADMIN]);
+        });
     }
 
     private function configModels(): void
