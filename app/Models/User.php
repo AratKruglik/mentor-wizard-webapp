@@ -3,9 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\RoleGuardEnum;
 use App\Observers\UserObserver;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -17,6 +19,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @mixin IdeHelperUser
  */
 #[ObservedBy(UserObserver::class)]
+#[UseFactory(UserFactory::class)]
 class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasRoles;
@@ -43,7 +46,15 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected array $guard_name = ['web', 'user', 'admin', 'superadmin', 'mentor', 'menti', 'coach'];
+    protected array $guard_name = [
+        'web',
+        RoleGuardEnum::USER->value,
+        RoleGuardEnum::ADMIN->value,
+        RoleGuardEnum::SUPER_ADMIN->value,
+        RoleGuardEnum::MENTOR->value,
+        RoleGuardEnum::MENTI->value,
+        RoleGuardEnum::COACH->value,
+    ];
 
     /**
      * Get the attributes that should be cast.
@@ -76,5 +87,15 @@ class User extends Authenticatable
     public function mentorPrograms(): HasMany
     {
         return $this->hasMany(MentorProgram::class, 'mentor_id');
+    }
+
+    public function mentorSessions(): HasMany
+    {
+        return $this->hasMany(MentorSession::class, 'mentor_id');
+    }
+
+    public function mentiSessions(): HasMany
+    {
+        return $this->hasMany(MentorSession::class, 'menti_id');
     }
 }

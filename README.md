@@ -188,7 +188,7 @@ docker compose exec app php artisan test --mutate --parallel
 - Для запуску тестування потрбіно увімкнути XDebug (він вимкнений за замовчуванням):
 
     ```sh
-    ddev xdedbug on
+    ddev xdebug on
     ```
 
 ### Назви гілок
