@@ -1,6 +1,5 @@
 stages:
   - pre-build
-  - lints
   - tests
 #  - build
 #  - deploy
@@ -50,7 +49,7 @@ composer:
     - curl --show-error --silent https://getcomposer.org/installer | php
     - cp .env.ci .env
   script:
-    - php composer.phar install --ignore-platform-reqs
+    - php composer.phar install --no-interaction --prefer-dist
   artifacts:
     paths:
       - vendor/
@@ -91,7 +90,7 @@ ide-helper:
 
 # [TEST] PHPMD
 lints:
-  stage: lints
+  stage: tests
   cache:
     policy: pull
   except:
@@ -100,7 +99,10 @@ lints:
     - merge_requests
   script:
     - echo 'PHP Stan is starting to analyse'
-    - ./vendor/bin/phpstan analyse --memory-limit=2G
+    - ./vendor/bin/phpstan analyse --memory-limit=2G --error-format=json > phpstan.json
+  artifacts:
+    reports:
+      codequality: phpstan.json
   dependencies:
     - composer
     - ide-helper
@@ -135,13 +137,16 @@ tests:
     - merge_requests
   script:
     - php -v
-    - echo "Run Pest tests"
-    - ./vendor/bin/pest
-    - echo "Code coverage"
-    - ./vendor/bin/pest --coverage
+    - echo "Run Pest tests with coverage"
+    - php artisan test --coverage --coverage-clover coverage.xml
     - echo "Run Pest Mutation tests"
-    - ./vendor/bin/pest --mutate --parallel --min=100
+    - php artisan test --mutate --parallel --min=100
   coverage: '/^\s*Lines:\s*\d+.\d+\%/'
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.xml
   dependencies:
     - composer
     - ide-helper
