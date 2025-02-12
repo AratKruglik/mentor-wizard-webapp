@@ -1,24 +1,19 @@
 includes:
     - vendor/larastan/larastan/extension.neon
     - vendor/nesbot/carbon/extension.neon
-
 parameters:
-
     paths:
-        - app/
-
-    # Level 10 is the highest level
+        - app
+        - database/factories
+        - database/seeders
     level: 5
-
     scanFiles:
         - _ide_helper.php
         - _ide_helper_models.php
         - .phpstorm.meta.php
-
+    excludePaths:
+        - tests/*
+        - storage/*
     ignoreErrors:
-        -
-          message: '#Call to an undefined static method#'
-          path: app/Providers/AppServiceProvider.php
-#
-#    excludePaths:
-#        - ./*/*/FileToBeExcluded.php
+        - '#Call to an undefined static method#'
+
