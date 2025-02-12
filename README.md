@@ -148,11 +148,11 @@ it('list todos', function () {
 Щоб запустити тестування з мутаціями, виконайте:
 
 ```bash
-docker compose exec app php artisan test --mutate
+docker compose exec app php artisan test --mutate --covered-only --min=100
 ```
 Або в паралельному режимі:
 ```bash
-docker compose exec app php artisan test --mutate --parallel
+docker compose exec app php artisan test --mutate --covered-only --min=100 --parallel
 ```
 
 ## DDEV Інсталяція

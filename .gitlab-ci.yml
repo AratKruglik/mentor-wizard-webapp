@@ -138,9 +138,9 @@ tests:
   script:
     - php -v
     - echo "Run Pest tests with coverage"
-    - php artisan test --coverage --coverage-clover coverage.xml
+    - php artisan test --profile --coverage --coverage-clover coverage.xml
     - echo "Run Pest Mutation tests"
-    - php artisan test --mutate --parallel --min=100
+    - php artisan test --mutate --covered-only --parallel --min=100
   coverage: '/^\s*Lines:\s*\d+.\d+\%/'
   artifacts:
     reports:
