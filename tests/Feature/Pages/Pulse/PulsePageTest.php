@@ -1,11 +1,11 @@
 <?php
 
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use function Pest\Laravel\actingAs;
-use Spatie\Permission\Models\Role;
 use App\Enums\RoleEnum;
 use App\Enums\RoleGuardEnum;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\Permission\Models\Role;
+use function Pest\Laravel\actingAs;
 
 uses(RefreshDatabase::class);
 

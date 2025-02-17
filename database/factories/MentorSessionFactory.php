@@ -11,6 +11,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class MentorSessionFactory extends Factory
 {
+
+    protected $model = MentorSession::class;
+
     /**
      * Define the model's default state.
      *
@@ -19,6 +22,8 @@ class MentorSessionFactory extends Factory
     public function definition(): array
     {
         return [
+            'mentor_id' => User::factory(),
+            'menti_id' => User::factory(),
             'date'=> fake()->dateTimeBetween('now', '+3 month'),
             'is_success' => fake()->boolean(),
             'is_paid' => fake()->boolean(),

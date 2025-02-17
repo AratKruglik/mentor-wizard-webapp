@@ -1,23 +1,21 @@
 <?php
 
 use App\Actions\Auth\Socialite\SocialiteCallback;
+use App\Enums\RoleEnum;
+use App\Enums\RoleGuardEnum;
 use App\Enums\SocialiteDriver;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\RedirectResponse;
-use Laravel\Socialite\Facades\Socialite;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use App\Enums\RoleEnum;
-use App\Enums\RoleGuardEnum;
-use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Log;
-use App\Models\User;
-use Laravel\Socialite\Two\User as SocialiteUser;
+use Laravel\Socialite\Facades\Socialite;
+use Spatie\Permission\Models\Role;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use function Pest\Laravel\assertAuthenticated;
 use function Pest\Laravel\assertDatabaseHas;
 
 uses(RefreshDatabase::class);
 
-covers(SocialiteCallback::class);
+mutates(SocialiteCallback::class);
 
 beforeEach(function () {
     Socialite::shouldReceive('driver')->andReturnSelf();

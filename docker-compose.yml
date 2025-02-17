@@ -31,7 +31,8 @@ services:
         networks:
             - mw-db-network
 
-    app: &app
+    app:
+        &app
         build:
             context: ./
             dockerfile: docker/php/Dockerfile-dev
@@ -85,7 +86,7 @@ services:
             - mw-redis-network
         ports: []
         healthcheck:
-            test: supercronic -test /var/www/docker/php/schedule/schedule | grep -q 'is valid'  # TODO try spatie LARAVEL-HEALTH
+            test: supercronic -test /var/www/docker/php/schedule/schedule | grep -q 'is valid' # TODO try spatie LARAVEL-HEALTH
             interval: 5s
             timeout: 10s
             retries: 2

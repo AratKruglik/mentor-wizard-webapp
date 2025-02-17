@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-covers(SocialiteRedirect::class);
+mutates(SocialiteRedirect::class);
 
 beforeEach(function () {
     Socialite::shouldReceive('driver')->andReturnSelf();

@@ -2,10 +2,9 @@
 
 namespace Database\Factories;
 
-
-use App\Models\User;
 use App\Models\Currency;
 use App\Models\MentorProgram;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -25,7 +24,7 @@ class MentorProgramFactory extends Factory
             'name' => fake()->sentence(15),
             'slug' => fake()->slug(),
             'description' => fake()->sentence(20),
-            'cost' => fake()->randomFloat(2,10,1000),
+            'cost' => fake()->randomFloat(2, 10, 1000),
             'currency_id' => Currency::factory(),
         ];
     }

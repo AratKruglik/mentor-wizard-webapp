@@ -87,7 +87,7 @@ docker compose exec app yarn install
 Виконайте команду:
 
 ```bash
-docker compose exec app yarn run dev
+docker compose exec app yarn dev
 ```
 
 ## Тестування

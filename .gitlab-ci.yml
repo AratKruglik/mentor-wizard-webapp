@@ -37,30 +37,32 @@ image: php:8.4-cli
 # ----------------- Jobs -------------------------
 
 # [PRE-BUILD] PHP Dependencies
-composer:
+dev-dependencies:
   stage: pre-build
   except:
     - tags
   only:
     - merge_requests
   before_script:
-    - apt update && apt install -y zip unzip libpq-dev postgresql-client
+    - apt update && apt install -y zip unzip libpq-dev postgresql-client curl nodejs npm
     - docker-php-ext-install pdo_pgsql
     - curl --show-error --silent https://getcomposer.org/installer | php
     - cp .env.ci .env
   script:
     - php composer.phar install --no-interaction --prefer-dist
+    - npm install -g yarn@latest
+    - yarn install
+    - yarn build
   artifacts:
     paths:
       - vendor/
+      - public/build/
     expire_in: 1 hour
   tags:
     - mw-build
 
 ide-helper:
   stage: pre-build
-  needs:
-    - composer
   cache:
     policy: pull
   except:
@@ -76,7 +78,7 @@ ide-helper:
     - php artisan ide-helper:meta
     - php artisan ide-helper:generate
   dependencies:
-    - composer
+    - dev-dependencies
   artifacts:
     paths:
       - _ide_helper.php
@@ -104,7 +106,7 @@ lints:
     reports:
       codequality: phpstan.json
   dependencies:
-    - composer
+    - dev-dependencies
     - ide-helper
   allow_failure: true
   tags:
@@ -138,7 +140,7 @@ tests:
   script:
     - php -v
     - echo "Run Pest tests with coverage"
-    - php artisan test --profile --coverage --coverage-clover coverage.xml
+    - php artisan test --ci --profile --coverage --coverage-clover coverage.xml
     - echo "Run Pest Mutation tests"
     - php artisan test --mutate --covered-only --parallel --min=100
   coverage: '/^\s*Lines:\s*\d+.\d+\%/'
@@ -148,7 +150,7 @@ tests:
         coverage_format: cobertura
         path: coverage.xml
   dependencies:
-    - composer
+    - dev-dependencies
     - ide-helper
   tags:
     - mw-build

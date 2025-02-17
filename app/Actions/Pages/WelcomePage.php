@@ -2,15 +2,16 @@
 
 namespace App\Actions\Pages;
 
-use Illuminate\View\View;
+use Inertia\Inertia;
+use Inertia\Response;
 use Lorisleiva\Actions\Concerns\AsController;
 
 class WelcomePage
 {
     use AsController;
 
-    public function handle(): View
+    public function handle(): Response
     {
-        return view('welcome');
+        return Inertia::render('Welcome');
     }
 }

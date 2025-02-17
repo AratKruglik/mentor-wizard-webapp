@@ -1,11 +1,10 @@
 <?php
 
-use App\Models\Attachment;
 use App\Models\User;
+use App\Models\Attachment;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Spatie\Permission\Models\Role;
 
 uses(RefreshDatabase::class);
 
