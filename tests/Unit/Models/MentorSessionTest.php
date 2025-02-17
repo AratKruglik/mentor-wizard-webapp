@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\MentorSession;
+use App\Models\MentorSessionNote;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Database\Eloquent\MassAssignmentException;
@@ -169,4 +170,19 @@ describe('MentorSession Model', function () {
 
         MentorSession::create(array_merge($data, ['extra_field' => 'test']));
     })->throws(MassAssignmentException::class);
+
+    it('has a valid mentorSessionNote relation', function () {
+        $mentorSession = MentorSession::factory()->create([
+            'mentor_id' => $this->mentor->getKey(),
+            'menti_id' => $this->menti->getKey(),
+        ]);
+
+        $mentorSessionNote = MentorSessionNote::factory()->create([
+            'mentor_session_id' => $mentorSession->getKey(),
+            'notes' => 'some notes',
+        ]);
+
+        expect($mentorSession->mentorSessionNote)->toBeInstanceOf(MentorSessionNote::class)
+            ->and($mentorSession->mentorSessionNote->getKey())->toBe($mentorSessionNote->getKey());
+    });
 });
