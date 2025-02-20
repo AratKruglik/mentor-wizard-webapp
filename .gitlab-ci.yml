@@ -1,9 +1,9 @@
 stages:
   - pre-build
+  - build-dependencies
   - tests
-#  - build
-#  - deploy
-#  - rollback
+  - deploy
+  - rollback
 
 # ----------------- Global configs -------------------------
 
@@ -13,84 +13,116 @@ services:
       POSTGRES_DB: test_mw_db
       POSTGRES_USER: test_mw_user
       POSTGRES_PASSWORD: test_mw_user_password
-
+  - docker:dind
+  - redis:latest
 
 variables:
   POSTGRES_DB: test_mw_db
   POSTGRES_USER: test_mw_user
   POSTGRES_PASSWORD: test_mw_user_password
   DB_CONNECTION: pgsql
-  DB_HOST: 127.0.0.1
+  DB_HOST: postgres
   DB_PORT: 5432
   DB_DATABASE: test_mw_db
   DB_USERNAME: test_mw_user
   DB_PASSWORD: test_mw_user_password
-  REDIS_HOST: 127.0.0.1
+  REDIS_HOST: redis
   REDIS_PORT: 6379
+  TEST_TAG: ci
 
-cache:
-  paths:
-    - vendor/
-
-image: php:8.4-cli
+image: $CI_REGISTRY_IMAGE:$TEST_TAG
 
 # ----------------- Jobs -------------------------
 
-# [PRE-BUILD] PHP Dependencies
-dev-dependencies:
+# [BUILD] Docker Image
+build-ci-image:
   stage: pre-build
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  script:
+    - docker build --no-cache -f ./docker/ci/Dockerfile-ci -t $CI_REGISTRY_IMAGE:$TEST_TAG .
+    - docker push $CI_REGISTRY_IMAGE:$TEST_TAG
+  only:
+    - merge_requests
+  when: manual
+  tags:
+    - mw-build
+
+# [PRE-BUILD] PHP Dependencies
+composer-dependencies:
+  stage: build-dependencies
   except:
     - tags
   only:
     - merge_requests
   before_script:
-    - apt update && apt install -y zip unzip libpq-dev postgresql-client curl nodejs npm
-    - docker-php-ext-install pdo_pgsql
-    - curl --show-error --silent https://getcomposer.org/installer | php
     - cp .env.ci .env
   script:
-    - php composer.phar install --no-interaction --prefer-dist
-    - npm install -g yarn@latest
-    - yarn install
-    - yarn build
+    - composer install --no-interaction --prefer-dist
+  cache:
+    paths:
+      - vendor/
   artifacts:
     paths:
       - vendor/
-      - public/build/
     expire_in: 1 hour
   tags:
     - mw-build
 
+yarn-dependencies:
+  stage: build-dependencies
+  script:
+    - yarn install
+    - yarn build
+  cache:
+    paths:
+      - node_modules/
+  artifacts:
+    paths:
+      - public/build/
+      - node_modules/
+    expire_in: 1 hour
+  needs:
+    - job: composer-dependencies
+      artifacts: true
+  only:
+    - merge_requests
+  tags:
+    - mw-build
+
 ide-helper:
-  stage: pre-build
+  stage: build-dependencies
   cache:
     policy: pull
   except:
     - tags
   only:
     - merge_requests
-  before_script:
-    - apt update && apt install -y zip unzip libpq-dev postgresql-client
-    - docker-php-ext-install pdo_pgsql
   script:
     - php artisan ide-helper:models -M
     - php artisan ide-helper:actions
     - php artisan ide-helper:meta
     - php artisan ide-helper:generate
-  dependencies:
-    - dev-dependencies
   artifacts:
     paths:
       - _ide_helper.php
       - _ide_helper_models.php
       - _ide_helper_actions.php
       - .phpstorm.meta.php
+    expire_in: 1 hour
+  needs:
+    - job: composer-dependencies
+      artifacts: true
+      optional: true
   when: always
   allow_failure: true
   tags:
     - mw-build
 
-# [TEST] PHPMD
+# [TEST]
 lints:
   stage: tests
   cache:
@@ -99,38 +131,32 @@ lints:
     - tags
   only:
     - merge_requests
+  before_script:
+    - cp .env.ci .env
+    - php artisan Key:generate
   script:
     - echo 'PHP Stan is starting to analyse'
     - ./vendor/bin/phpstan analyse --memory-limit=2G --error-format=json > phpstan.json
   artifacts:
     reports:
       codequality: phpstan.json
-  dependencies:
-    - dev-dependencies
-    - ide-helper
+  needs:
+    - job: composer-dependencies
+      artifacts: true
+      optional: true
+    - job: ide-helper
+      artifacts: true
   allow_failure: true
   tags:
     - mw-build
 
-# [TEST] RUN PHPUNIT TESTS
+# [TEST] RUN PEST TESTS
 tests:
   stage: tests
   except:
     - tags
   before_script:
-    - apt update && apt install -y zip unzip libpq-dev postgresql-client
-    - pecl install xdebug
-    - docker-php-ext-install pdo_pgsql
-    - docker-php-ext-enable xdebug
-    - echo "xdebug.mode=coverage" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-    - echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-    - echo "xdebug.client_port=9003" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-    - echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
     - cp .env.ci .env
-    - cp .env.ci .env.testing
-    - mkdir -p storage/framework/{sessions,views,cache}
-    - chmod -R 777 storage
-    - chmod -R 777 bootstrap/cache
     - php artisan key:generate
     - php artisan vendor:publish --tag=laravel-assets --tag=log-viewer-assets --ansi --force
   cache:
@@ -138,19 +164,44 @@ tests:
   only:
     - merge_requests
   script:
-    - php -v
     - echo "Run Pest tests with coverage"
-    - php artisan test --ci --profile --coverage --coverage-clover coverage.xml
+    - ./vendor/bin/pest --coverage --colors never --parallel --coverage-clover coverage/coverage.xml
     - echo "Run Pest Mutation tests"
-    - php artisan test --mutate --covered-only --parallel --min=100
-  coverage: '/^\s*Lines:\s*\d+.\d+\%/'
+    - ./vendor/bin/pest --mutate --covered-only --parallel --min=100
+  coverage: /Statement coverage[A-Za-z\.*]\s*:\s*([^%]+)/
   artifacts:
     reports:
       coverage_report:
         coverage_format: cobertura
-        path: coverage.xml
-  dependencies:
-    - dev-dependencies
-    - ide-helper
+        path: coverage/coverage.xml
+  needs:
+    - job: composer-dependencies
+      artifacts: true
+      optional: true
+    - job: yarn-dependencies
+      artifacts: true
+      optional: true
+    - job: ide-helper
+      artifacts: true
+      optional: true
   tags:
     - mw-build
+
+#deploy:
+#  stage: deploy
+#  script:
+#    - echo "Deploying application"
+#    - php artisan migrate --force
+#  only:
+#    - main
+#  tags:
+#    - mw-deploy
+#
+#rollback:
+#  stage: rollback
+#  script:
+#    - echo "Rolling back to previous deployment"
+#    - php artisan migrate:rollback --step=1
+#  when: manual
+#  tags:
+#    - mw-deploy

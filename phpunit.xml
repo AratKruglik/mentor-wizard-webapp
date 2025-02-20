@@ -31,7 +31,8 @@
     </php>
      <coverage>
         <report>
-            <html outputDirectory="var/coverage"/>
+            <html outputDirectory="coverage"/>
+            <clover outputFile="coverage/coverage.xml"/>
         </report>
      </coverage>
 </phpunit>
