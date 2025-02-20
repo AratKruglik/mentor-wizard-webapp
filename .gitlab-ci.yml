@@ -28,7 +28,7 @@ variables:
   DB_PASSWORD: test_mw_user_password
   REDIS_HOST: redis
   REDIS_PORT: 6379
-  TEST_TAG: ci
+  TEST_TAG: ci-yarn-v4
 
 image: $CI_REGISTRY_IMAGE:$TEST_TAG
 

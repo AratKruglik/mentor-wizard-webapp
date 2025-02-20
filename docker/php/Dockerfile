@@ -30,7 +30,8 @@ RUN \
     apk del .build-deps
 
 RUN apk add --no-cache nodejs npm git
-RUN npm install yarn -g
+RUN npm install -g corepack
+RUN corepack enable && corepack prepare yarn@4.6.0 --activate
 
 #RUN certbot --staging certonly --standalone -d mentor-wizard.com --email mentor.wizard.ua@gmail.com --agree-tos --non-interactive
 
