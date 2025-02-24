@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class UserProfileFactory extends Factory
 {
+    protected $model = UserProfile::class;
     /**
      * Define the model's default state.
      *
@@ -22,7 +23,6 @@ class UserProfileFactory extends Factory
             'user_id' => User::factory(),
             'name' => fake()->firstName,
             'last_name' => fake()->lastName,
-            'avatar' => fake()->imageUrl(),
             'linkedin' => fake()->url,
             'telegram' => fake()->userName,
             'whatsapp' => fake()->phoneNumber,
