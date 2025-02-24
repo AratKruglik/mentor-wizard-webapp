@@ -53,6 +53,11 @@ class MentorSession extends Model
         return $this->belongsTo(User::class, 'menti_id');
     }
 
+    public function payment(): HasOne
+    {
+        return $this->hasOne(Payment::class);
+    }
+    
     public function mentorSessionNote(): HasOne
     {
         return $this->hasOne(MentorSessionNote::class);
