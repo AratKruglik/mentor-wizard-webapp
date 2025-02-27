@@ -1,6 +1,6 @@
-FROM php:8.4.4-cli-alpine3.20
+FROM php:8.4.4-cli-alpine3.21
 
-COPY --from=composer:2.7.4 /usr/bin/composer /usr/bin/
+COPY --from=composer:2.8.5 /usr/bin/composer /usr/bin/
 
 RUN \
     set -ex && \
@@ -36,7 +36,8 @@ RUN \
     apk del .build-deps
 
 RUN apk add --no-cache nodejs npm git
-RUN npm install yarn -g
+RUN npm install -g corepack
+RUN corepack enable && corepack prepare yarn@4.6.0 --activate
 
 #RUN certbot --staging certonly --standalone -d mentor-wizard.com --email mentor.wizard.ua@gmail.com --agree-tos --non-interactive
 

@@ -36,7 +36,6 @@ services:
         build:
             context: ./
             dockerfile: docker/php/Dockerfile-dev
-        user: ${UID}:${GID}
         restart: unless-stopped
         container_name: mw-app
         environment:
