@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Auth;
 
 use Illuminate\Auth\Events\Verified;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
@@ -13,13 +14,13 @@ class VerifyEmailRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         if (! hash_equals((string) $this->user()->getKey(), (string) $this->route('id'))) {
             return false;
         }
 
-        if (! hash_equals(sha1($this->user()->getEmailForVerification()), (string) $this->route('hash'))) {
+        if (! hash_equals(sha1($this->user()->getEmailForVerification()), $this->route('hash'))) {
             return false;
         }
 
@@ -29,9 +30,9 @@ class VerifyEmailRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, ValidationRule|array|string>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             //
@@ -43,7 +44,7 @@ class VerifyEmailRequest extends FormRequest
      *
      * @return void
      */
-    public function fulfill()
+    public function fulfill(): void
     {
         if (! $this->user()->hasVerifiedEmail()) {
             $this->user()->markEmailAsVerified();
@@ -55,9 +56,10 @@ class VerifyEmailRequest extends FormRequest
     /**
      * Configure the validator instance.
      *
-     * @return \Illuminate\Validation\Validator
+     * @param Validator $validator
+     * @return Validator
      */
-    public function withValidator(Validator $validator)
+    public function withValidator(Validator $validator): Validator
     {
         return $validator;
     }

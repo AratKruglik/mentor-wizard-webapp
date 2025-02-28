@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\Auth;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Validator;
 
 class ConfirmPasswordRequest extends FormRequest
 {
@@ -18,23 +20,22 @@ class ConfirmPasswordRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array|string>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'password' => ['required'],
         ];
     }
 
-    public function withValidator($validator)
+    public function withValidator(Validator $validator): void
     {
         $validator->after(function ($validator) {
             if (! Auth::guard('web')->validate([
                 'email' => $this->user()->email,
                 'password' => $this->input('password'),
             ])) {
-                // Якщо пароль неправильний — додаємо помилку до поля "password"
                 $validator->errors()->add('password', __('auth.password'));
             }
         });

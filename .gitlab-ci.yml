@@ -165,15 +165,15 @@ tests:
     - merge_requests
   script:
     - echo "Run Pest tests with coverage"
-    - ./vendor/bin/pest --coverage --colors never --parallel --coverage-clover coverage/coverage.xml
+    - ./vendor/bin/pest --coverage --parallel --coverage-clover=coverage/coverage.xml
     - echo "Run Pest Mutation tests"
     - ./vendor/bin/pest --mutate --covered-only --parallel --min=100
-  coverage: /Statement coverage[A-Za-z\.*]\s*:\s*([^%]+)/
   artifacts:
     reports:
       coverage_report:
         coverage_format: cobertura
         path: coverage/coverage.xml
+  coverage: '/^\s*\d+\.\d+\%/'
   needs:
     - job: composer-dependencies
       artifacts: true

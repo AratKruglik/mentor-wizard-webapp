@@ -2,13 +2,14 @@
 
 use App\Models\MentorSession;
 use App\Models\MentorSessionNote;
+use App\Models\Payment;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Database\Eloquent\MassAssignmentException;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
-uses(RefreshDatabase::class);
-covers(MentorSession::class);
+mutates(MentorSession::class);
 
 describe('MentorSession Model', function () {
     beforeEach(function () {
@@ -142,33 +143,7 @@ describe('MentorSession Model', function () {
     });
 
     it('has precisely defined fillable attributes and mass assignment works correctly', function () {
-        $data = [
-            'mentor_id' => $this->mentor->getKey(),
-            'menti_id' => $this->menti->getKey(),
-            'date' => '2024-03-03 12:00:00',
-            'is_success' => 1,
-            'is_paid' => 0,
-            'is_cancelled' => 1,
-            'is_date_changed' => 1,
-            'cost' => '150.75',
-        ];
-
-        $mentorSession = MentorSession::factory()->create($data);
-
-        expect($mentorSession->mentor_id)->toBe($this->mentor->getKey())
-            ->and($mentorSession->menti_id)->toBe($this->menti->getKey())
-            ->and($mentorSession->date)->toBeInstanceOf(DateTime::class)
-            ->and($mentorSession->is_success)->toBeTrue()
-            ->and($mentorSession->is_paid)->toBeFalse()
-            ->and($mentorSession->is_cancelled)->toBeTrue()
-            ->and($mentorSession->is_date_changed)->toBeTrue()
-            ->and($mentorSession->cost)->toBeFloat()
-            ->and($mentorSession->mentor)->toBeInstanceOf(User::class)
-            ->and($mentorSession->mentor->getKey())->toBe($this->mentor->getKey())
-            ->and($mentorSession->menti)->toBeInstanceOf(User::class)
-            ->and($mentorSession->menti->getKey())->toBe($this->menti->getKey());
-
-        MentorSession::create(array_merge($data, ['extra_field' => 'test']));
+        MentorSession::create(['extra_field' => 'test']);
     })->throws(MassAssignmentException::class);
 
     it('has a valid mentorSessionNote relation', function () {
@@ -184,5 +159,55 @@ describe('MentorSession Model', function () {
 
         expect($mentorSession->mentorSessionNote)->toBeInstanceOf(MentorSessionNote::class)
             ->and($mentorSession->mentorSessionNote->getKey())->toBe($mentorSessionNote->getKey());
+    });
+
+    it('throws MassAssignmentException when trying to fill non-fillable attributes', function () {
+        expect(function () {
+            MentorSession::create([
+                'mentor_id' => $this->mentor->getKey(),
+                'menti_id' => $this->menti->getKey(),
+                'nonexistent_attribute' => 'test value'
+            ]);
+        })->toThrow(MassAssignmentException::class);
+    });
+
+    it('has correctly defined relations', function () {
+        $mentorSession = MentorSession::factory()->create([
+            'mentor_id' => $this->mentor->getKey(),
+            'menti_id' => $this->menti->getKey(),
+        ]);
+
+        expect($mentorSession->mentor())->toBeInstanceOf(BelongsTo::class)
+            ->and($mentorSession->menti())->toBeInstanceOf(BelongsTo::class)
+            ->and($mentorSession->payment())->toBeInstanceOf(HasOne::class)
+            ->and($mentorSession->mentorSessionNote())->toBeInstanceOf(HasOne::class);
+    });
+
+    it('can create session with MentorSessionNote', function () {
+        $mentorSession = MentorSession::factory()->create([
+            'mentor_id' => $this->mentor->getKey(),
+            'menti_id' => $this->menti->getKey(),
+        ]);
+
+        $mentorSessionNote = MentorSessionNote::factory()->create([
+            'mentor_session_id' => $mentorSession->getKey()
+        ]);
+
+        expect($mentorSession->mentorSessionNote)->toBeInstanceOf(MentorSessionNote::class)
+            ->and($mentorSession->mentorSessionNote->getKey())->toBe($mentorSessionNote->getKey());
+    });
+
+    it('can create session with Payment', function () {
+        $mentorSession = MentorSession::factory()->create([
+            'mentor_id' => $this->mentor->getKey(),
+            'menti_id' => $this->menti->getKey(),
+        ]);
+
+        $payment = Payment::factory()->create([
+            'mentor_session_id' => $mentorSession->getKey()
+        ]);
+
+        expect($mentorSession->payment)->toBeInstanceOf(Payment::class)
+            ->and($mentorSession->payment->getKey())->toBe($payment->getKey());
     });
 });

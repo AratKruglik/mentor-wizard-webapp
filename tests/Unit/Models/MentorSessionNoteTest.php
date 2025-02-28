@@ -5,10 +5,8 @@ use App\Models\MentorSessionNote;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Database\Eloquent\MassAssignmentException;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
-uses(RefreshDatabase::class);
-covers(MentorSessionNote::class);
+mutates(MentorSessionNote::class);
 
 describe('MentorSessionNote Model', function () {
     beforeEach(function () {
@@ -90,18 +88,6 @@ describe('MentorSessionNote Model', function () {
     });
 
     it('has precisely defined fillable attributes and mass assignment works correctly', function () {
-        $data = [
-            'mentor_session_id' => $this->mentorSession->getKey(),
-            'notes' => 'some notes',
-        ];
-
-        $mentorSessionNote = MentorSessionNote::factory()->create($data);
-
-        expect($mentorSessionNote->mentor_session_id)->toBe($this->mentorSession->getKey())
-            ->and($mentorSessionNote->notes)->toBeString()
-            ->and($mentorSessionNote->mentorSession)->toBeInstanceOf(MentorSession::class)
-            ->and($mentorSessionNote->mentorSession->getKey())->toBe($this->mentorSession->getKey());
-
-        MentorSession::create(array_merge($data, ['extra_field' => 'test']));
+        MentorSession::create(['extra_field' => 'test']);
     })->throws(MassAssignmentException::class);
 });

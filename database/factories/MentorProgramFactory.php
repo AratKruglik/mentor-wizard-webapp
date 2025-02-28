@@ -6,6 +6,7 @@ use App\Models\Currency;
 use App\Models\MentorProgram;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends Factory<MentorProgram>
@@ -21,7 +22,7 @@ class MentorProgramFactory extends Factory
     {
         return [
             'mentor_id' => User::factory(),
-            'name' => fake()->sentence(15),
+            'name' => Str::random(100),
             'slug' => fake()->slug(),
             'description' => fake()->sentence(20),
             'cost' => fake()->randomFloat(2, 10, 1000),
