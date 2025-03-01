@@ -165,7 +165,7 @@ docker compose exec app php artisan test --mutate --covered-only --min=100 --par
 ### Інсталяція
 
 - Запуск DDEV. Це збілдить всі неодхідні конетйнери згідно налаштувань у
-  `.ddev/config.yaml`
+  [`.ddev/config.yaml`](.ddev/config.yaml)
 
     ```sh
     ddev start
@@ -177,19 +177,25 @@ docker compose exec app php artisan test --mutate --covered-only --min=100 --par
     ddev artisan key:generate; ddev artisan migrate
     ```
 
-- Встановлення `Node.js` залежностей:
+- Для коректної роботи `octane` та `reverb` налаштуйте наступні змінні у [`.env`](.env):
 
-    ```sh
-    ddev yarn install
+    ```dotenv
+    OCTANE_HTTPS=true
+
+    REVERB_HOST=${DDEV_HOSTNAME}
+    REVERB_PORT=8443
+    REVERB_SCHEME=https
     ```
 
 ### Тестування
 
-- Для запуску тестування потрбіно увімкнути XDebug (він вимкнений за замовчуванням):
+- Для запуску тестування потрбіно увімкнути `Xdebug` (він вимкнений за замовчуванням):
 
     ```sh
     ddev xdebug on
     ```
+
+## Найменування
 
 ### Назви гілок
 Вимоги описані у файлі
