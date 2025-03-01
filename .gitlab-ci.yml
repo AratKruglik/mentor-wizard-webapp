@@ -171,7 +171,7 @@ tests:
     - develop
   script:
     - echo "Run Pest tests with coverage"
-    - ./vendor/bin/pest --coverage --parallel --coverage-cobertura=coverage/coverage.xml --coverage-clover=coverage/coverage-clover.xml
+    - ./vendor/bin/pest --coverage --parallel --coverage-cobertura=coverage/coverage.xml --coverage-clover=coverage/coverage-clover.xml --coverage-html=coverage
     - echo "Run Pest Mutation tests"
     - ./vendor/bin/pest --mutate --covered-only --parallel --min=100
   artifacts:
