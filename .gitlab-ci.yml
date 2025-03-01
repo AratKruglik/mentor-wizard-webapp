@@ -171,7 +171,7 @@ tests:
     - develop
   script:
     - echo "Run Pest tests with coverage"
-    - /vendor/bin/pest --coverage --parallel --coverage-clover=coverage/coverage.xml
+    - ./vendor/bin/pest --coverage --parallel --coverage-cobertura=coverage/coverage.xml --coverage-clover=coverage/coverage-clover.xml
     - echo "Run Pest Mutation tests"
     - ./vendor/bin/pest --mutate --covered-only --parallel --min=100
   artifacts:
@@ -179,7 +179,7 @@ tests:
       coverage_report:
         coverage_format: cobertura
         path: coverage/coverage.xml
-  coverage: '/Total Coverage:\s*(\d+\.\d+%)/'
+  coverage: '/^\s*Lines:\s*\d+.\d+\%/'
   needs:
     - job: composer-dependencies
       artifacts: true
