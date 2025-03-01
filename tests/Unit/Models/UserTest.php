@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Chat;
 use App\Models\User;
 use App\Models\UserProfile;
 use App\Models\MentorReview;
@@ -7,6 +8,7 @@ use App\Models\MentorProgram;
 use App\Models\MentorSession;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Database\Eloquent\MassAssignmentException;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Hash;
 
 mutates(User::class);
@@ -100,4 +102,52 @@ describe('User Model', function () {
     it('has precisely defined fillable attributes and mass assignment works correctly', function () {
         User::create(['extra_field' => 'test']);
     })->throws(MassAssignmentException::class);
+
+    it('has coach chats relationship', function () {
+        $coach = User::factory()->create();
+        $menti = User::factory()->create();
+
+        $chat = Chat::factory()->create([
+            'coach_id' => $coach->getKey(),
+            'menti_id' => $menti->getKey(),
+        ]);
+
+        expect($coach->coachChats)->toHaveCount(1)
+            ->and($coach->coachChats->first()->getKey())->toBe($chat->getKey());
+    });
+
+    it('has menti chats relationship', function () {
+        $mentor = User::factory()->create();
+        $menti = User::factory()->create();
+
+        $chat = Chat::factory()->create([
+            'mentor_id' => $mentor->getKey(),
+            'menti_id' => $menti->getKey(),
+        ]);
+
+        expect($menti->mentiChats)->toHaveCount(1)
+            ->and($menti->mentiChats->first()->getKey())->toBe($chat->getKey());
+    });
+
+    it('has mentor chats relationship', function () {
+        $mentor = User::factory()->create();
+        $menti = User::factory()->create();
+
+        $chat = Chat::factory()->create([
+            'mentor_id' => $mentor->getKey(),
+            'menti_id' => $menti->getKey(),
+        ]);
+
+        expect($mentor->mentorChats)->toHaveCount(1)
+            ->and($mentor->mentorChats->first()->getKey())->toBe($chat->getKey());
+    });
+
+    it('returns empty collection when coach has no chats', function () {
+        $coach = User::factory()->create();
+
+        $coachChats = $coach->coachChats();
+
+        expect($coachChats)->toBeInstanceOf(HasMany::class)
+            ->and($coach->coachChats)->toHaveCount(0);
+    });
 });

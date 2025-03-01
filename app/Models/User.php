@@ -98,4 +98,19 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(MentorSession::class, 'menti_id');
     }
+
+    public function mentorChats(): HasMany
+    {
+        return $this->hasMany(Chat::class, 'mentor_id');
+    }
+
+    public function mentiChats(): HasMany
+    {
+        return $this->hasMany(Chat::class, 'menti_id');
+    }
+
+    public function coachChats(): HasMany
+    {
+        return $this->hasMany(Chat::class, 'coach_id');
+    }
 }
