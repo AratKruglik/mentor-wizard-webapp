@@ -47,6 +47,7 @@ build-ci-image:
     - docker push $CI_REGISTRY_IMAGE:$TEST_TAG
   only:
     - merge_requests
+    - develop
   when: manual
   tags:
     - mw-build
@@ -58,6 +59,7 @@ composer-dependencies:
     - tags
   only:
     - merge_requests
+    - develop
   before_script:
     - cp .env.ci .env
   script:
@@ -90,6 +92,7 @@ yarn-dependencies:
       artifacts: true
   only:
     - merge_requests
+    - develop
   tags:
     - mw-build
 
@@ -101,6 +104,7 @@ ide-helper:
     - tags
   only:
     - merge_requests
+    - develop
   script:
     - php artisan ide-helper:models -M
     - php artisan ide-helper:actions
@@ -131,6 +135,7 @@ lints:
     - tags
   only:
     - merge_requests
+    - develop
   before_script:
     - cp .env.ci .env
     - php artisan Key:generate
@@ -163,6 +168,7 @@ tests:
     policy: pull
   only:
     - merge_requests
+    - develop
   script:
     - echo "Run Pest tests with coverage"
     - ./vendor/bin/pest --coverage --parallel --coverage-clover=coverage/coverage.xml
