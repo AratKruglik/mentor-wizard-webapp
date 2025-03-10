@@ -51,7 +51,6 @@ build-ci-image:
   when: manual
   tags:
     - mw-build
-    - gitlab-org-docker
 
 # [PRE-BUILD] PHP Dependencies
 composer-dependencies:
@@ -75,7 +74,6 @@ composer-dependencies:
     expire_in: 1 hour
   tags:
     - mw-build
-    - gitlab-org-docker
 
 yarn-dependencies:
   stage: build-dependencies
@@ -98,7 +96,6 @@ yarn-dependencies:
     - develop
   tags:
     - mw-build
-    - gitlab-org-docker
 
 ide-helper:
   stage: build-dependencies
@@ -129,7 +126,6 @@ ide-helper:
   allow_failure: true
   tags:
     - mw-build
-    - gitlab-org-docker
 
 # [TEST]
 lints:
@@ -159,7 +155,6 @@ lints:
   allow_failure: true
   tags:
     - mw-build
-    - gitlab-org-docker
 
 # [TEST] RUN PEST TESTS
 tests:
@@ -198,7 +193,6 @@ tests:
       optional: true
   tags:
     - mw-build
-    - gitlab-org-docker
 
 #deploy:
 #  stage: deploy
