@@ -14,11 +14,11 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 class PhpstanToGitlab extends Command
 {
+    public const int DEPTH = 512;
+
     protected $signature = 'phpstan:convert {inputFile} {outputFile=codequality.json}';
 
     protected $description = 'Convert PHPStan JSON output to GitLab Code Quality format';
-
-    public const DEPTH = 512;
 
     /**
      * @throws FileNotFoundException
@@ -41,19 +41,21 @@ class PhpstanToGitlab extends Command
             ->flatMap(function (array $issues, string $filePath): Collection {
                 $sanitizedFilePath = preg_replace('/^\/var\/www\//', '', $filePath);
 
-                return collect(Arr::get($issues, 'messages'))->map(function (array $message) use ($sanitizedFilePath): array {
-                    return [
-                        'description' => Arr::get($message, 'message'),
-                        'fingerprint' => md5($sanitizedFilePath.Arr::get($message, 'message')),
-                        'severity' => 'major',
-                        'location' => [
-                            'path' => $sanitizedFilePath,
-                            'lines' => [
-                                'begin' => Arr::get($message, 'line', 1),
+                return collect(Arr::get($issues, 'messages'))->map(
+                    function (array $message) use ($sanitizedFilePath): array {
+                        return [
+                            'description' => Arr::get($message, 'message'),
+                            'fingerprint' => md5($sanitizedFilePath.Arr::get($message, 'message')),
+                            'severity' => 'major',
+                            'location' => [
+                                'path' => $sanitizedFilePath,
+                                'lines' => [
+                                    'begin' => Arr::get($message, 'line', 1),
+                                ],
                             ],
-                        ],
-                    ];
-                });
+                        ];
+                    }
+                );
             })
             ->values()
             ->toArray();
