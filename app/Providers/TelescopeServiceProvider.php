@@ -21,10 +21,9 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 
         $this->hideSensitiveRequestDetails();
 
-        $isLocal = $this->app->environment('local');
+        $isLocal = $this->app->environment('local', 'testing', 'ci');
 
         Telescope::filter(function (IncomingEntry $entry) use ($isLocal) {
-            // aviod healthchecks into Telescope dashboard
             if ($entry->type === 'request' && $entry->content['uri'] === '/up') {
                 return false;
             }
@@ -46,7 +45,7 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
      */
     protected function hideSensitiveRequestDetails(): void
     {
-        if ($this->app->environment('local')) {
+        if ($this->app->environment('local', 'testing', 'ci')) {
             return;
         }
 
@@ -66,8 +65,8 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
      */
     protected function gate(): void
     {
-        Gate::define('viewTelescope', function (User $user) {
-            return true;
+        Gate::define('viewTelescope', function (?User $user) {
+            return $this->app->environment('local', 'testing', 'ci');
         });
     }
 }

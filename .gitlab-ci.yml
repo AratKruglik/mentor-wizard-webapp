@@ -70,6 +70,7 @@ composer-dependencies:
   artifacts:
     paths:
       - vendor/
+      - public/vendor/
     expire_in: 1 hour
   tags:
     - mw-build
@@ -163,7 +164,7 @@ tests:
   before_script:
     - cp .env.ci .env
     - php artisan key:generate
-    - php artisan vendor:publish --tag=laravel-assets --tag=log-viewer-assets --ansi --force
+    - php artisan vendor:publish --tag=laravel-assets --tag=log-viewer-assets --tag=telescope-assets --ansi --force
   cache:
     policy: pull
   only:
