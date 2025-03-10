@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[UseFactory(MentorProgramFactory::class)]
 /**
@@ -29,5 +30,10 @@ class MentorProgram extends Model
     public function mentor(): BelongsTo
     {
         return $this->belongsTo(User::class, 'mentor_id');
+    }
+
+    public function mentorProgramBlocks(): HasMany
+    {
+        return $this->hasMany(MentorProgramBlock::class, 'mentor_program_id');
     }
 }

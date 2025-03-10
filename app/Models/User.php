@@ -74,6 +74,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(UserProfile::class);
     }
 
+    public function mentiProgramProgress(): ?HasOne
+    {
+        return $this->hasOne(MentorProgramBlockProgress::class);
+    }
+
     public function mentorReviews(): HasMany
     {
         return $this->hasMany(MentorReview::class, 'mentor_id');
