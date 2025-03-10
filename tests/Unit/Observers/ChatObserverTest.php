@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Chat;
 use App\Observers\ChatObserver;
 use Illuminate\Support\Facades\Log;
@@ -8,7 +10,7 @@ mutates(ChatObserver::class);
 
 describe('ChatObserver', function () {
     beforeEach(function () {
-        $this->chatObserver = new ChatObserver();
+        $this->chatObserver = new ChatObserver;
     });
 
     describe('saved method scenarios', function () {
@@ -64,6 +66,7 @@ describe('ChatObserver', function () {
                 ->withArgs(function ($message, $context) {
                     expect($message)->toBe('Deleting chat because all user IDs are NULL.')
                         ->and($context)->toBe(['chat' => 42]);
+
                     return true;
                 });
 

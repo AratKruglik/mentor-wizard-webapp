@@ -1,8 +1,10 @@
 <?php
 
-use App\Models\MentorProgramBlockProgress;
+declare(strict_types=1);
+
 use App\Models\MentorProgram;
 use App\Models\MentorProgramBlock;
+use App\Models\MentorProgramBlockProgress;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Database\Eloquent\MassAssignmentException;
@@ -16,7 +18,7 @@ describe('MentorProgramBlock Model', function () {
     });
 
     it('has the correct fillable attributes', function () {
-        $model = new MentorProgramBlock();
+        $model = new MentorProgramBlock;
 
         expect($model->getFillable())->toEqual([
             'mentor_program_id',
@@ -43,7 +45,7 @@ describe('MentorProgramBlock Model', function () {
     })->throws(MassAssignmentException::class);
 
     it('has correct casts for MentorProgramBlock', function () {
-        $model = new MentorProgramBlock();
+        $model = new MentorProgramBlock;
 
         expect($model->getCasts())->toEqual([
             'id' => 'int',
@@ -54,19 +56,18 @@ describe('MentorProgramBlock Model', function () {
         ]);
     });
 
-
     it('fails to create the model with duplicate slugs', function () {
         MentorProgramBlock::create([
             'mentor_program_id' => 1,
-            'name' => "some name",
-            'description' => "some description",
+            'name' => 'some name',
+            'description' => 'some description',
             'slug' => 'unique-slug',
         ]);
 
         $duplicateModel = MentorProgramBlock::create([
             'mentor_program_id' => 2,
-            'name' => "some name",
-            'description' => "some description",
+            'name' => 'some name',
+            'description' => 'some description',
             'slug' => 'unique-slug',
         ]);
 

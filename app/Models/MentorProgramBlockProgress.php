@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Database\Factories\MentorProgramBlockProgressFactory;
@@ -20,9 +22,9 @@ class MentorProgramBlockProgress extends Model
     protected $table = 'mentor_program_block_progresses';
 
     protected $fillable = [
-        "mentor_program_block_id",
-        "menti_id",
-        "is_completed",
+        'mentor_program_block_id',
+        'menti_id',
+        'is_completed',
     ];
 
     protected function casts(): array

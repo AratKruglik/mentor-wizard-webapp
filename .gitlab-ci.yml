@@ -138,13 +138,13 @@ lints:
     - develop
   before_script:
     - cp .env.ci .env
-    - php artisan Key:generate
+    - php artisan key:generate
   script:
-    - echo 'PHP Stan is starting to analyse'
-    - ./vendor/bin/phpstan analyse --memory-limit=2G --error-format=json > phpstan.json
+    - ./vendor/bin/phpstan analyse --memory-limit=2G --error-format=json > phpstan.json || true
+    - php artisan phpstan:convert phpstan.json codequality.json
   artifacts:
     reports:
-      codequality: phpstan.json
+      codequality: codequality.json
   needs:
     - job: composer-dependencies
       artifacts: true

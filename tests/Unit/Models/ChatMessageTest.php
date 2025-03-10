@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Chat;
-use App\Models\User;
 use App\Models\ChatMessage;
+use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Database\Eloquent\MassAssignmentException;
 
@@ -106,9 +108,9 @@ describe('ChatMessage Model', function () {
         ]);
     })->throws(MassAssignmentException::class);
 
-    it('has a precisely defined cast configuration', function() {
+    it('has a precisely defined cast configuration', function () {
         $reflectionMethod = new ReflectionMethod(ChatMessage::class, 'casts');
-        $chatMessage = new ChatMessage();
+        $chatMessage = new ChatMessage;
         $casts = $reflectionMethod->invoke($chatMessage);
 
         expect($casts)->toBe([
@@ -119,7 +121,7 @@ describe('ChatMessage Model', function () {
         ]);
     });
 
-    it('has precisely defined fillable attributes and mass assignment works correctly', function(){
+    it('has precisely defined fillable attributes and mass assignment works correctly', function () {
         $data = [
             'chat_id' => $this->chat->getKey(),
             'user_id' => $this->menti->getKey(),
@@ -136,6 +138,5 @@ describe('ChatMessage Model', function () {
             ->and($chatMessage->chat)->toBeInstanceOf(Chat::class)
             ->and($chatMessage->chat->getKey())->toBe($this->chat->getKey());
     });
-
 
 });

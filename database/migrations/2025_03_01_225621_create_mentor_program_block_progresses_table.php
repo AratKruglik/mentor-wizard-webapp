@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('menti_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('mentor_program_block_id')->constrained('mentor_program_blocks')->cascadeOnDelete();
-            $table->boolean("is_completed")->nullable();
+            $table->boolean('is_completed')->nullable();
             $table->timestamps();
         });
     }

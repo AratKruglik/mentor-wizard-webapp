@@ -47,3 +47,5 @@ Thumbs.db
 yarn-error.log
 
 *.DS_Store
+phpstan.json
+codequality.json

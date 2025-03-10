@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Chat;
+use App\Models\MentorProgram;
+use App\Models\MentorReview;
+use App\Models\MentorSession;
 use App\Models\User;
 use App\Models\UserProfile;
-use App\Models\MentorReview;
-use App\Models\MentorProgram;
-use App\Models\MentorSession;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Database\Eloquent\MassAssignmentException;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -22,7 +24,7 @@ describe('User Model', function () {
         $user = User::factory()->create([
             'username' => 'testuser',
             'email' => 'test@example.com',
-            'password' => 'password123'
+            'password' => 'password123',
         ]);
 
         expect($user)->toBeInstanceOf(User::class)
@@ -71,7 +73,7 @@ describe('User Model', function () {
         $menti = User::factory()->create();
         $mentorSession = MentorSession::factory()->create([
             'mentor_id' => $mentor->getKey(),
-            'menti_id' => $menti->getKey()
+            'menti_id' => $menti->getKey(),
         ]);
 
         expect($mentor->mentorSessions)->toHaveCount(1)
@@ -90,7 +92,7 @@ describe('User Model', function () {
 
     it('has a precisely defined cast configuration', function () {
         $reflectionMethod = new ReflectionMethod(User::class, 'casts');
-        $user = new User();
+        $user = new User;
         $casts = $reflectionMethod->invoke($user);
 
         expect($casts)->toBe([

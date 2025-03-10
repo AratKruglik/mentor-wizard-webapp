@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Database\Factories\MentorProgramBlockFactory;
@@ -22,7 +24,7 @@ class MentorProgramBlock extends Model
         'mentor_program_id',
         'name',
         'slug',
-        'description'
+        'description',
     ];
 
     protected function casts(): array
@@ -31,17 +33,17 @@ class MentorProgramBlock extends Model
             'mentor_program_id' => 'int',
             'name' => 'string',
             'slug' => 'string',
-            'description' => 'string'
+            'description' => 'string',
         ];
     }
 
     public function mentorProgramBlockProgress(): HasOne
     {
-        return  $this->HasOne(MentorProgramBlockProgress::class, 'id');
+        return $this->HasOne(MentorProgramBlockProgress::class, 'id');
     }
 
     public function mentorProgram(): BelongsTo
     {
-        return  $this->belongsTo(MentorProgram::class, 'id');
+        return $this->belongsTo(MentorProgram::class, 'id');
     }
 }

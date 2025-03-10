@@ -1,10 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
-use App\Models\Chat;
 use App\Models\ChatMessage;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -26,5 +26,4 @@ class ChatMessageFactory extends Factory
             'is_read' => fake()->boolean(),
         ];
     }
-
 }

@@ -1,8 +1,10 @@
 <?php
 
-use App\Models\MentorProgramBlockProgress;
+declare(strict_types=1);
+
 use App\Models\MentorProgram;
 use App\Models\MentorProgramBlock;
+use App\Models\MentorProgramBlockProgress;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Database\Eloquent\MassAssignmentException;
@@ -16,16 +18,16 @@ describe('MentorProgramBlockProgress Model', function () {
     });
 
     it('has the correct fillable attributes', function () {
-        $model = new MentorProgramBlockProgress();
+        $model = new MentorProgramBlockProgress;
         expect($model->getFillable())->toEqual([
-            "mentor_program_block_id",
-            "menti_id",
-            "is_completed",
+            'mentor_program_block_id',
+            'menti_id',
+            'is_completed',
         ]);
     });
 
     it('has correct casts for MentorProgramBlockProgress', function () {
-        $model = new MentorProgramBlockProgress();
+        $model = new MentorProgramBlockProgress;
         expect($model->getCasts())->toEqual([
             'id' => 'int',
             'mentor_program_block_id' => 'int',
@@ -50,8 +52,7 @@ describe('MentorProgramBlockProgress Model', function () {
         MentorProgramBlock::create(['extra_field' => 'test']);
     })->throws(MassAssignmentException::class);
 
-
-    it("fails to create the model without required fields", function () {
-        MentorProgramBlockProgress::create(['mentor_program_block_id'=>null, 'menti_id'=>null]);
+    it('fails to create the model without required fields', function () {
+        MentorProgramBlockProgress::create(['mentor_program_block_id' => null, 'menti_id' => null]);
     })->throws(QueryException::class);
 });
