@@ -1,0 +1,53 @@
+name: '⚙️ Setup environment'
+description: 'Setups environment for testing tasks.'
+
+inputs:
+  php:
+    description: 'PHP version to install'
+    required: true
+    default: '8.4'
+
+runs:
+  using: composite
+  steps:
+    - name: '📋 Install Task'
+      shell: bash
+      run: sh -c "$(curl -s --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin > /dev/null 2>&1
+
+    - name: '🐘 Setup PHP ${{ inputs.php }}'
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ inputs.php }}
+        coverage: xdebug
+        extensions: pdo, pdo_pgsql
+
+    - name: '🗃 Get composer cache directory'
+      id: composer-cache
+      shell: bash
+      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+    - name: '💽 Cache composer dependencies'
+      uses: actions/cache@v4
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: "${{ runner.os }}-${{ github.ref_name }}-composer-${{ hashFiles('**/composer.lock') }}"
+        restore-keys: ${{ runner.os }}-${{ github.ref_name }}-composer-
+
+    - name: '💽 Cache var directory'
+      uses: actions/cache@v4
+      with:
+        path: var
+        key: "${{ runner.os }}-${{ github.ref_name }}-var"
+        restore-keys: ${{ runner.os }}-${{ github.ref_name }}-var
+
+    - name: '📦 Install composer dependencies'
+      shell: bash
+      run: composer i --no-progress --no-scripts -qn --ansi;
+
+    - name: '🧰 Set up Laravel'
+      shell: bash
+      run: |
+        cp .env.example .env.testing
+        php artisan key:generate --env=testing --ansi
+        php artisan app:setup --env=testing --ansi
+
