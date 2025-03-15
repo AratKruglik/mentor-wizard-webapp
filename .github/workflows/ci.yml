@@ -67,18 +67,19 @@ jobs:
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
-          path: vendor/
-          key: composer-vendor
+          key: "${{ runner.os }}-${{ github.ref_name }}-composer-${{ hashFiles('**/composer.lock') }}"
+          restore-keys: ${{ runner.os }}-${{ github.ref_name }}-composer-
+          path: |
+            vendor/
+            _ide_helper.php
+            _ide_helper_models.php
+            _ide_helper_actions.php
+            .phpstorm.meta.php
       - name: Upload vendor artifacts
         uses: actions/upload-artifact@v4
         with:
           name: composer-vendor
-          path: |
-           vendor/
-           _ide_helper.php
-           _ide_helper_models.php
-           _ide_helper_actions.php
-           .phpstorm.meta.php
+          path: vendor/
 
   yarn-dependencies:
     runs-on: ubuntu-latest
@@ -90,12 +91,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: composer-vendor
-          path: |
-            vendor/
-            _ide_helper.php
-            _ide_helper_models.php
-            _ide_helper_actions.php
-            .phpstorm.meta.php
+          path: vendor/
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -149,12 +145,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: composer-vendor
-          path: |
-            vendor/
-            _ide_helper.php
-            _ide_helper_models.php
-            _ide_helper_actions.php
-            .phpstorm.meta.php
+          path: vendor/
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
