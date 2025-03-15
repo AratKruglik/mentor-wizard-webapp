@@ -214,6 +214,7 @@ jobs:
   test:
     name: '♻️ Test | ${{ matrix.command.name }}'
     runs-on: ubuntu-latest
+    needs: [composer-dependencies, yarn-dependencies]
 
     services:
       postgres:
