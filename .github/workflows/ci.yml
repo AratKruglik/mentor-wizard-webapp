@@ -151,6 +151,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
+          extensions: pdo, pdo_pgsql
       - name: Make PHPStan executable
         run: chmod +x ./vendor/bin/phpstan
       - name: Create IDE Helper files
@@ -160,21 +161,60 @@ jobs:
           cp .env.ci .env
           php artisan key:generate
           ./vendor/bin/phpstan analyse --memory-limit=2G --error-format=json > phpstan.json || true
-          php artisan phpstan:convert phpstan.json codequality.json
       - name: Upload code quality report
         uses: actions/upload-artifact@v4
         with:
           name: codequality
           path: codequality.json
 
-  tests:
+#  tests:
+#    runs-on: ubuntu-latest
+#    needs: [composer-dependencies, yarn-dependencies]
+#    env:
+#      DB_HOST: 127.0.0.1
+#      POSTGRES_DB: testing
+#      POSTGRES_USER: db
+#      POSTGRES_PASSWORD: db
+#    services:
+#      postgres:
+#        image: postgres:17
+#        ports:
+#          - 5432:5432
+#        env:
+#          POSTGRES_DB: testing
+#          POSTGRES_USER: db
+#          POSTGRES_PASSWORD: db
+#        options: >-
+#          --health-cmd pg_isready
+#          --health-interval 10s
+#          --health-timeout 5s
+#          --health-retries 5
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v3
+#      - name: Set up PHP
+#        uses: shivammathur/setup-php@v2
+#        with:
+#          php-version: '8.4'
+#          coverage: xdebug
+#          extensions: pdo, pdo_pgsql
+#      - name: Run tests
+#        run: |
+#          cp .env.ci .env
+#          php artisan key:generate
+#          php artisan vendor:publish --tag=laravel-assets --tag=log-viewer-assets --tag=telescope-assets --ansi --force
+#          ./vendor/bin/pest --coverage --parallel --coverage-cobertura=coverage/coverage.xml --coverage-clover=coverage/coverage-clover.xml --coverage-html=coverage
+#          ./vendor/bin/pest --mutate --covered-only --parallel --min=100
+#      - name: Upload coverage report
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: coverage
+#          path: coverage/coverage.xml
+
+  test:
+    name: '♻️ Test | ${{ matrix.command.name }}'
     runs-on: ubuntu-latest
-    needs: [composer-dependencies, yarn-dependencies]
-    env:
-      DB_HOST: 127.0.0.1
-      POSTGRES_DB: testing
-      POSTGRES_USER: db
-      POSTGRES_PASSWORD: db
+
     services:
       postgres:
         image: postgres:17
@@ -189,22 +229,40 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+
+    strategy:
+      fail-fast: false
+      matrix:
+        command:
+          - { name: '🧬 Unit\Feature', command: ./vendor/bin/pest --coverage --parallel }
+          - { name: '🦠 Mutate',  command: ./vendor/bin/pest --mutate --covered-only --parallel --min=100 }
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.4'
-      - name: Run tests
-        run: |
-          cp .env.ci .env
-          php artisan key:generate
-          php artisan vendor:publish --tag=laravel-assets --tag=log-viewer-assets --tag=telescope-assets --ansi --force
-          ./vendor/bin/pest --coverage --parallel --coverage-cobertura=coverage/coverage.xml --coverage-clover=coverage/coverage-clover.xml --coverage-html=coverage
-          ./vendor/bin/pest --mutate --covered-only --parallel --min=100
-      - name: Upload coverage report
-        uses: actions/upload-artifact@v3
-        with:
-          name: coverage
-          path: coverage/coverage.xml
+      - name: '🛎 Checkout'
+        uses: actions/checkout@v4
+
+      - name: '⚙️ Prepare environment'
+        uses: ./.github/actions/setup-testing
+
+      - name: '${{ matrix.command.name }} tests'
+        run: ${{ matrix.command.command }}
+        env:
+          DB_HOST: 127.0.0.1
+          DB_DATABASE: testing
+          DB_USERNAME: db
+          DB_PASSWORD: db
+
+#      - name: '☂️ Upload results to Codecov'
+#        uses: codecov/codecov-action@v5
+#        with:
+#          token: ${{ secrets.CODECOV_TOKEN }}
+#          slug: maks-oleksyuk/notes
+#          flags: ${{ matrix.command.name }}
+#          directory: ./var/report
+#
+#      - name: '☂️ Upload test results to Codecov'
+#        uses: codecov/test-results-action@v1
+#        with:
+#          token: ${{ secrets.CODECOV_TOKEN }}
+#          flags: ${{ matrix.command.name }}
+#          directory: ./var/report
