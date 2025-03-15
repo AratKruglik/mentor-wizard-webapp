@@ -6,6 +6,7 @@ on:
       - develop
     paths-ignore:
       - README.md
+      - LICENSE.md
   pull_request:
     branches:
       - develop
@@ -45,7 +46,6 @@ jobs:
 #        command:
 #          - {
 #            name: '🧽 Laravel Pint',
-#            shell: bash,
 #            command: ./vendor/bin/pint,
 #            php: true,
 #            node: false,
@@ -69,18 +69,18 @@ jobs:
 #            node: false,
 #          }
 
-    steps:
-      - name: '🛎 Checkout'
-        uses: actions/checkout@v4
-
-      - name: '⚙️ Prepare environment'
-        uses: ./.github/actions/setup-validation
-        with:
-          use-php: ${{ matrix.command.php }}
-          use-node: ${{ matrix.command.node }}
-
-      - name: '${{ matrix.command.name }} validate'
-        run: task ${{ matrix.command.command }}
+#    steps:
+#      - name: '🛎 Checkout'
+#        uses: actions/checkout@v4
+#
+#      - name: '⚙️ Prepare environment'
+#        uses: ./.github/actions/setup-validation
+#        with:
+#          use-php: ${{ matrix.command.php }}
+#          use-node: ${{ matrix.command.node }}
+#
+#      - name: '${{ matrix.command.name }} validate'
+#        run: task ${{ matrix.command.command }}
 
   test:
     name: '♻️ Test | ${{ matrix.command.name }}'
