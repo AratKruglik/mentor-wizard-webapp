@@ -24,7 +24,7 @@ jobs:
   composer-dependencies:
     runs-on: ubuntu-latest
     env:
-      DB_HOST: postgres
+      DB_HOST: localhost
     services:
       postgres:
         image: postgres:17-alpine3.20
