@@ -242,6 +242,12 @@ jobs:
       - name: '🛎 Checkout'
         uses: actions/checkout@v4
 
+      - name: Download vendor artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: node-build
+          path: public/build/
+
       - name: '⚙️ Prepare environment'
         uses: ./.github/actions/setup-testing
 
