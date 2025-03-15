@@ -38,6 +38,21 @@ jobs:
     name: '🪄 Lints | ${{ matrix.command.name }}'
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:17-alpine3.20
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: testing
+          POSTGRES_USER: db
+          POSTGRES_PASSWORD: db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     strategy:
       fail-fast: false
       matrix:
@@ -118,6 +133,7 @@ jobs:
           DB_PASSWORD: db
 
       - name: '☂️ Upload results to Codecov'
+        if: ${{ !cancelled() }}
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
