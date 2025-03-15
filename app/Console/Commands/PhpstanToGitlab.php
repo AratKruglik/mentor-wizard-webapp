@@ -64,6 +64,8 @@ class PhpstanToGitlab extends Command
 
         $this->info("GitLab Code Quality report generated: {$outputFile}");
 
+        $this->info("That's message for PR testing GitLab Code Quality report generated: {$outputFile}");
+
         return SymfonyCommand::SUCCESS;
     }
 }
