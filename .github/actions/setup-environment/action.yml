@@ -72,4 +72,5 @@ runs:
       run: |
         cp .env.ci .env.testing
         php artisan key:generate --env=testing --ansi
+        composer ide-helper
 
