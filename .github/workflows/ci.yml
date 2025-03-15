@@ -34,11 +34,6 @@ jobs:
           POSTGRES_PASSWORD: test_mw_user_password
         ports:
           - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -66,7 +61,11 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '22'
+      - name: Install Yarn
+        run: |
+          corepack enable
+          corepack prepare yarn@4.6.0 --activate
       - name: Install dependencies
         run: yarn install
       - name: Build assets
