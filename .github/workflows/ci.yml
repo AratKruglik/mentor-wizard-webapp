@@ -121,7 +121,7 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          slug: mentor-wizard-webapp
+          slug: AratKruglik/mentor-wizard-webapp
           flags: ${{ matrix.command.name }}
           directory: ./coverage
 
