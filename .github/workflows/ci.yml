@@ -34,7 +34,7 @@ jobs:
         with:
           retain_days: 7
           keep_minimum_runs: 1
-          delete_workflow_pattern: ci-laravel.yml
+          delete_workflow_pattern: ci.yml
 
   lint:
     name: '🪄 Lint | ${{ matrix.command.name }}'
