@@ -35,7 +35,7 @@ jobs:
         delete_workflow_pattern: ci.yml
 
   lints:
-    name: '🪄 Lint | ${{ matrix.command.name }}'
+    name: '🪄 Lints | ${{ matrix.command.name }}'
     runs-on: ubuntu-latest
 
     strategy:
@@ -65,7 +65,7 @@ jobs:
           use-php: ${{ matrix.command.php }}
           use-node: ${{ matrix.command.node }}
 
-      - name: '${{ matrix.command.name }} validate'
+      - name: ${{ matrix.command.name }}
         run: ${{ matrix.command.command }}
 
   tests:
