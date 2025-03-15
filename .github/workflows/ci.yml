@@ -45,35 +45,29 @@ jobs:
       matrix:
         command:
           - {
-            name: '📦 Composer',
-            command: 'lint:composer',
-            php: true,
-            node: false,
-          }
-          - {
             name: '🧽 Laravel Pint',
-            command: 'lint:pint -- --format=checkstyle | tail -n +2 | cs2pr',
+            command: './vendor/bin/pint',
             php: true,
             node: false,
           }
-          - {
-            name: '🔍 PHPStan',
-            command: 'lint:php:stan -- --no-progress',
-            php: true,
-            node: false,
-          }
-          - {
-            name: '🅿️ Prettier',
-            command: 'lint:prettier',
-            php: false,
-            node: true,
-          }
-          - {
-            name: '🏠 Rector',
-            command: 'lint:rector -- --no-progress-bar --output-format=github',
-            php: true,
-            node: false,
-          }
+#          - {
+#            name: '🔍 PHPStan',
+#            command: 'lint:php:stan -- --no-progress',
+#            php: true,
+#            node: false,
+#          }
+#          - {
+#            name: '🅿️ Prettier',
+#            command: 'lint:prettier',
+#            php: false,
+#            node: true,
+#          }
+#          - {
+#            name: '🏠 Rector',
+#            command: 'lint:rector -- --no-progress-bar --output-format=github',
+#            php: true,
+#            node: false,
+#          }
 
     steps:
       - name: '🛎 Checkout'

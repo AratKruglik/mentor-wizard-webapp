@@ -25,17 +25,12 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: '📋 Install Task'
-      shell: bash
-      run: sh -c "$(curl -s --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin > /dev/null 2>&1
-
     - name: '🐘 Setup PHP ${{ inputs.php }}'
       if: ${{ inputs.use-php == 'true' }}
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ inputs.php }}
         coverage: none
-        tools: cs2pr
 
     - name: '🗃 Get composer cache directory'
       if: ${{ inputs.use-php == 'true' }}
@@ -51,31 +46,29 @@ runs:
         key: "${{ runner.os }}-${{ github.ref_name }}-composer-${{ hashFiles('**/composer.lock') }}"
         restore-keys: ${{ runner.os }}-${{ github.ref_name }}-composer-
 
-    - name: '💽 Cache var directory'
-      uses: actions/cache@v4
-      if: ${{ inputs.use-php == 'true' }}
-      with:
-        path: var
-        key: "${{ runner.os }}-${{ github.ref_name }}-var"
-        restore-keys: ${{ runner.os }}-${{ github.ref_name }}-var
-
     - name: '📦 Install composer dependencies'
       if: ${{ inputs.use-php == 'true' }}
       shell: bash
       run: composer i --no-progress --no-scripts -qn --ansi;
 
-    - name: '🟧 Setup pnpm'
+    - name: '🟧 Setup yarn'
       if: ${{ inputs.use-node == 'true' }}
-      uses: pnpm/action-setup@v4
+      uses: actions/setup-node@v4
 
     - name: '❇️ Setup Node.js ${{ inputs.node }}'
       if: ${{ inputs.use-node == 'true' }}
       uses: actions/setup-node@v4
       with:
-        cache: pnpm
+        cache: yarn
         node-version: ${{ inputs.node }}
 
-    - name: '📦 Install pnpm dependencies'
+    - name: '📦 Install yarn dependencies'
       if: ${{ inputs.use-node == 'true' }}
       shell: bash
-      run: pnpm i -sD --frozen-lockfile --color=always
+      run: |
+        corepack enable
+        corepack prepare yarn@4.6.0 --activate
+        yarn install
+
+
+
