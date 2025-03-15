@@ -51,7 +51,7 @@ jobs:
           path: vendor/
           key: composer-vendor
       - name: Upload vendor artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: composer-vendor
           path: vendor/
