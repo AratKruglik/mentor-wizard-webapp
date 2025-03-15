@@ -145,10 +145,24 @@ jobs:
 
   lints:
     runs-on: ubuntu-latest
-    needs: composer-dependencies
+    needs: [composer-dependencies, ide-helper]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Download vendor artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: composer-vendor
+          path: vendor/
+      - name: Download ide-helper artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: ide-helper
+          path: |
+            _ide_helper.php
+            _ide_helper_models.php
+            _ide_helper_actions.php
+            .phpstorm.meta.php
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -160,7 +174,7 @@ jobs:
           ./vendor/bin/phpstan analyse --memory-limit=2G --error-format=json > phpstan.json || true
           php artisan phpstan:convert phpstan.json codequality.json
       - name: Upload code quality report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: codequality
           path: codequality.json
