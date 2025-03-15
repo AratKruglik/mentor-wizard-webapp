@@ -64,6 +64,8 @@ jobs:
 
       - name: '⚙️ Prepare environment'
         uses: ./.github/actions/setup-testing
+        with:
+          use-node: true
 
       - name: '${{ matrix.command.name }} tests'
         run: ${{ matrix.command.command }}
