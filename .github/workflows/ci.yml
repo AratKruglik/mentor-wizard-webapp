@@ -84,6 +84,11 @@ jobs:
         with:
           path: node_modules/
           key: node-modules
+      - name: Upload node artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: node-build
+          path: public/build/
 
   ide-helper:
     runs-on: ubuntu-latest
@@ -91,6 +96,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Download vendor artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: composer-vendor
+          path: vendor/
+      - name: Download node build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: node-build
+          path: public/build/
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -102,7 +117,7 @@ jobs:
           php artisan ide-helper:meta
           php artisan ide-helper:generate
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ide-helper
           path: |
