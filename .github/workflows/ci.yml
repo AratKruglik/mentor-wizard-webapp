@@ -114,7 +114,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: node-build
-          path: public/build/
+          path: public/
 
   lints:
     runs-on: ubuntu-latest
@@ -246,10 +246,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: node-build
-          path: public/build/
-
-      - name: Publish vendor assets
-        run: php artisan vendor:publish --tag=laravel-assets --tag=log-viewer-assets --tag=telescope-assets --ansi --force
+          path: public/
 
       - name: '⚙️ Prepare environment'
         uses: ./.github/actions/setup-testing
