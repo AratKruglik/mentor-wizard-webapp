@@ -90,7 +90,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: composer-vendor
-          path: vendor/
+          path: |
+            vendor/
+            _ide_helper.php
+            _ide_helper_models.php
+            _ide_helper_actions.php
+            .phpstorm.meta.php
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
