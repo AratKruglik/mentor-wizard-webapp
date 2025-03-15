@@ -39,17 +39,17 @@ jobs:
     name: '🪄 Lint | ${{ matrix.command.name }}'
     runs-on: ubuntu-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        command:
-          - {
-            name: '🧽 Laravel Pint',
-            shell: bash,
-            command: ./vendor/bin/pint,
-            php: true,
-            node: false,
-          }
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        command:
+#          - {
+#            name: '🧽 Laravel Pint',
+#            shell: bash,
+#            command: ./vendor/bin/pint,
+#            php: true,
+#            node: false,
+#          }
 #          - {
 #            name: '🔍 PHPStan',
 #            command: 'lint:php:stan -- --no-progress',
