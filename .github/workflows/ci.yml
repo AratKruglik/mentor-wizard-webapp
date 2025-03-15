@@ -23,6 +23,13 @@ jobs:
 
   composer-dependencies:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine3.20
+        env:
+          POSTGRES_DB: test_mw_db
+          POSTGRES_USER: test_mw_user
+          POSTGRES_PASSWORD: test_mw_user_password
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -39,7 +46,7 @@ jobs:
         with:
           path: vendor
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
+          restore-keys: ${{ runner.os }}-composer
 
   yarn-dependencies:
     runs-on: ubuntu-latest
