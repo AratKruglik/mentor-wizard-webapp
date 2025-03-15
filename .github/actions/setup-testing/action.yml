@@ -47,11 +47,7 @@ runs:
 
     - name: '📦 Install composer dependencies'
       shell: bash
-      run: composer i --no-progress --no-scripts -qn --ansi;
-
-    - name: '📦 Publish vendor assets'
-      shell: bash
-      run: php artisan vendor:publish --tag=laravel-assets --tag=log-viewer-assets --tag=telescope-assets --ansi --force
+      run: composer i --no-progress --no-scripts -qn --ansi
 
     - name: '🟧 Setup yarn'
       if: ${{ inputs.use-node == 'true' }}
@@ -83,4 +79,5 @@ runs:
       run: |
         cp .env.ci .env.testing
         php artisan key:generate --env=testing --ansi
+        php artisan vendor:publish --tag=laravel-assets --tag=log-viewer-assets --tag=telescope-assets --ansi --force
 
