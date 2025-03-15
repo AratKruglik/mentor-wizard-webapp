@@ -45,7 +45,8 @@ jobs:
         command:
           - {
             name: '🧽 Laravel Pint',
-            command: 'pint',
+            shell: bash,
+            command: ./vendor/bin/pint,
             php: true,
             node: false,
           }

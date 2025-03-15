@@ -33,13 +33,6 @@ runs:
         key: "${{ runner.os }}-${{ github.ref_name }}-composer-${{ hashFiles('**/composer.lock') }}"
         restore-keys: ${{ runner.os }}-${{ github.ref_name }}-composer-
 
-    - name: '💽 Cache var directory'
-      uses: actions/cache@v4
-      with:
-        path: var
-        key: "${{ runner.os }}-${{ github.ref_name }}-var"
-        restore-keys: ${{ runner.os }}-${{ github.ref_name }}-var
-
     - name: '📦 Install composer dependencies'
       shell: bash
       run: composer i --no-progress --no-scripts -qn --ansi;
@@ -47,7 +40,7 @@ runs:
     - name: '🧰 Set up Laravel'
       shell: bash
       run: |
-        cp .env.example .env.testing
+        cp .env.ci .env.testing
         php artisan key:generate --env=testing --ansi
         php artisan app:setup --env=testing --ansi
 
