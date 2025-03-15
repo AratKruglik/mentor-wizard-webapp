@@ -92,7 +92,7 @@ jobs:
 
   ide-helper:
     runs-on: ubuntu-latest
-    needs: composer-dependencies
+    needs: [composer-dependencies, yarn-dependencies]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
