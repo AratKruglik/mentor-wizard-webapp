@@ -211,8 +211,8 @@ jobs:
 #          name: coverage
 #          path: coverage/coverage.xml
 
-  test:
-    name: '♻️ Test | ${{ matrix.command.name }}'
+  tests:
+    name: '♻️ Tests | ${{ matrix.command.name }}'
     runs-on: ubuntu-latest
     needs: [composer-dependencies, yarn-dependencies]
 
@@ -235,8 +235,8 @@ jobs:
       fail-fast: false
       matrix:
         command:
-          - { name: '🧬 Unit\Feature', command: ./vendor/bin/pest --coverage --parallel }
-          - { name: '🦠 Mutate',  command: ./vendor/bin/pest --mutate --covered-only --parallel --min=100 }
+          - { name: '🧬 Pest', command: ./vendor/bin/pest --coverage --parallel }
+          - { name: '🦠 Mutation',  command: ./vendor/bin/pest --mutate --covered-only --parallel --min=100 }
 
     steps:
       - name: '🛎 Checkout'
@@ -247,6 +247,9 @@ jobs:
         with:
           name: node-build
           path: public/build/
+
+      - name: Publish vendor assets
+        run: php artisan vendor:publish --tag=laravel-assets --tag=log-viewer-assets --tag=telescope-assets --ansi --force
 
       - name: '⚙️ Prepare environment'
         uses: ./.github/actions/setup-testing
