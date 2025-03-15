@@ -32,6 +32,40 @@ jobs:
         keep_minimum_runs: 1
         delete_workflow_pattern: ci.yml
 
+  lints:
+    name: '🪄 Lint | ${{ matrix.command.name }}'
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        command:
+          - {
+            name: '🔍 PHPStan',
+            command: './vendor/bin/phpstan analyse --memory-limit=2G --error-format=json > phpstan.json || true',
+            php: true,
+            node: false,
+          }
+          - {
+            name: '🧽 Laravel Pint',
+            command: ./vendor/bin/pint,
+            php: true,
+            node: false,
+          }
+
+    steps:
+      - name: '🛎 Checkout'
+        uses: actions/checkout@v4
+
+      - name: '⚙️ Prepare environment'
+        uses: ./.github/actions/setup-environment
+        with:
+          use-php: ${{ matrix.command.php }}
+          use-node: ${{ matrix.command.node }}
+
+      - name: '${{ matrix.command.name }} validate'
+        run: ${{ matrix.command.command }}
+
   tests:
     name: '♻️ Tests | ${{ matrix.command.name }}'
     runs-on: ubuntu-latest
@@ -55,15 +89,21 @@ jobs:
       fail-fast: false
       matrix:
         command:
-          - { name: '🧬 Pest', command: ./vendor/bin/pest --coverage --parallel --coverage-cobertura=coverage/coverage.xml --coverage-clover=coverage/coverage-clover.xml --coverage-html=coverage }
-          - { name: '🦠 Mutation',  command: ./vendor/bin/pest --mutate --covered-only --parallel --min=100 }
+          - {
+            name: '🧬 Pest',
+            command: ./vendor/bin/pest --coverage --parallel --coverage-cobertura=coverage/coverage.xml --coverage-clover=coverage/coverage-clover.xml --coverage-html=coverage
+          }
+          - {
+            name: '🦠 Mutation',
+            command: ./vendor/bin/pest --mutate --covered-only --parallel --min=100
+          }
 
     steps:
       - name: '🛎 Checkout'
         uses: actions/checkout@v4
 
       - name: '⚙️ Prepare environment'
-        uses: ./.github/actions/setup-testing
+        uses: ./.github/actions/setup-environment
         with:
           use-node: true
 
