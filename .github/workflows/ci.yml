@@ -115,17 +115,18 @@ jobs:
           DB_USERNAME: db
           DB_PASSWORD: db
 
-#      - name: '☂️ Upload results to Codecov'
-#        uses: codecov/codecov-action@v5
-#        with:
-#          token: ${{ secrets.CODECOV_TOKEN }}
-#          slug: maks-oleksyuk/notes
-#          flags: ${{ matrix.command.name }}
-#          directory: ./var/report
-#
-#      - name: '☂️ Upload test results to Codecov'
-#        uses: codecov/test-results-action@v1
-#        with:
-#          token: ${{ secrets.CODECOV_TOKEN }}
-#          flags: ${{ matrix.command.name }}
-#          directory: ./var/report
+      - name: '☂️ Upload results to Codecov'
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: mentor-wizard-webapp
+          flags: ${{ matrix.command.name }}
+          directory: ./coverage
+
+      - name: '☂️ Upload test results to Codecov'
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: ${{ matrix.command.name }}
+          directory: ./coverage
