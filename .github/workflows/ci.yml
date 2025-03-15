@@ -48,13 +48,13 @@ jobs:
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
-          path: vendor
+          path: vendor/
           key: composer-vendor
       - name: Upload vendor artifacts
         uses: actions/upload-artifact@v3
         with:
           name: composer-vendor
-          path: vendor
+          path: vendor/
 
   yarn-dependencies:
     runs-on: ubuntu-latest
@@ -66,7 +66,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: composer-vendor
-          path: vendor
+          path: vendor/
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -82,9 +82,8 @@ jobs:
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
-          path: node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: ${{ runner.os }}-yarn-
+          path: node_modules/
+          key: node-modules
 
   ide-helper:
     runs-on: ubuntu-latest
