@@ -80,6 +80,15 @@ jobs:
         with:
           name: composer-vendor
           path: vendor/
+      - name: Upload IDE helper artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: composer-ide-helper
+          path: |
+            _ide_helper.php
+            _ide_helper_models.php
+            _ide_helper_actions.php
+            .phpstorm.meta.php
 
   yarn-dependencies:
     runs-on: ubuntu-latest
@@ -147,6 +156,15 @@ jobs:
         with:
           name: composer-vendor
           path: vendor/
+      - name: Download IDE helper artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: composer-ide-helper
+          path: |
+            _ide_helper.php
+            _ide_helper_models.php
+            _ide_helper_actions.php
+            .phpstorm.meta.php
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
