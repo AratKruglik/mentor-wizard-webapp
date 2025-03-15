@@ -107,8 +107,9 @@ jobs:
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
+          key: "${{ runner.os }}-${{ github.ref_name }}-node-${{ hashFiles('**/yarn.lock') }}"
+          restore-keys: ${{ runner.os }}-${{ github.ref_name }}-node-
           path: node_modules/
-          key: node-modules
       - name: Upload node artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -150,6 +151,8 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
+      - name: Make PHPStan executable
+        run: chmod +x ./vendor/bin/phpstan
       - name: Run PHPStan
         run: |
           cp .env.ci .env
