@@ -10,7 +10,7 @@ use Spatie\Permission\Models\Role;
 describe('Telescope Page', function () {
     beforeEach(function () {
         $this->seed(RoleSeeder::class);
-    })->skip('temporarily to run it on CI');
+    });
 
     it('telescope is accessible for a user in non-local environment', function () {
         $user = User::factory()->create([
@@ -21,7 +21,7 @@ describe('Telescope Page', function () {
         $this->actingAs($user)
             ->get('/telescope')
             ->assertOk();
-    })->skip('temporarily to run it on CI');
+    });
 
     it('telescope is accessible for an admin in non-local environment', function () {
         $role = Role::findByName(RoleEnum::ADMIN->value, RoleGuardEnum::ADMIN->value);
@@ -35,7 +35,7 @@ describe('Telescope Page', function () {
         $this->actingAs($admin)
             ->get('/telescope')
             ->assertOk();
-    })->skip('temporarily to run it on CI');
+    });
 
     it('telescope avoids loging healthchecks in database', function () {
         $user = User::factory()->create([
@@ -50,7 +50,7 @@ describe('Telescope Page', function () {
             ->exists())->toBeFalse()
             ->and(EntryModel::where('type', 'view')->whereJsonContains('content', ['name' => 'health-up.blade.php'])
                 ->exists())->toBeFalse();
-    })->skip('temporarily to run it on CI');
+    });
 
     it('telescope successfully logs info about request into database', function () {
         $user = User::factory()->create([
@@ -65,6 +65,6 @@ describe('Telescope Page', function () {
             ->exists())->toBeTrue()
             ->and(EntryModel::where('type', 'view')->whereJsonContains('content', ['name' => 'app'])
                 ->exists())->toBeTrue();
-    })->skip('temporarily to run it on CI');
+    });
 
 })->skip('temporarily to run it on CI');
