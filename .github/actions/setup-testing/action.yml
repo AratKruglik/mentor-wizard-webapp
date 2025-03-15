@@ -7,6 +7,21 @@ inputs:
     required: true
     default: '8.4'
 
+  node:
+    description: 'Node.js version to install'
+    required: true
+    default: '22.x'
+
+  use-php:
+    description: 'Whether to install PHP and dependencies'
+    required: false
+    default: 'false'
+
+  use-node:
+    description: 'Whether to install Node.js and dependencies'
+    required: false
+    default: 'false'
+
 runs:
   using: composite
   steps:
@@ -33,6 +48,31 @@ runs:
     - name: '📦 Install composer dependencies'
       shell: bash
       run: composer i --no-progress --no-scripts -qn --ansi;
+
+    - name: '🟧 Setup yarn'
+      if: ${{ inputs.use-node == 'true' }}
+      uses: actions/setup-node@v4
+
+    - name: '❇️ Setup Node.js ${{ inputs.node }}'
+      if: ${{ inputs.use-node == 'true' }}
+      uses: actions/setup-node@v4
+      with:
+        cache: yarn
+        node-version: ${{ inputs.node }}
+
+    - name: '📦 Install yarn dependencies'
+      if: ${{ inputs.use-node == 'true' }}
+      shell: bash
+      run: |
+        corepack enable
+        corepack prepare yarn@4.6.0 --activate
+        yarn install
+
+    - name: '📦 Build front-end assets'
+      if: ${{ inputs.use-node == 'true' }}
+      shell: bash
+      run: |
+        yarn build
 
     - name: '🧰 Set up Laravel'
       shell: bash

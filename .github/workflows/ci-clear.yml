@@ -36,38 +36,38 @@ jobs:
           keep_minimum_runs: 1
           delete_workflow_pattern: ci.yml
 
-  lint:
+  lints:
     name: '🪄 Lint | ${{ matrix.command.name }}'
     runs-on: ubuntu-latest
 
-#    strategy:
-#      fail-fast: false
-#      matrix:
-#        command:
-#          - {
-#            name: '🧽 Laravel Pint',
-#            command: ./vendor/bin/pint,
-#            php: true,
-#            node: false,
-#          }
-#          - {
-#            name: '🔍 PHPStan',
-#            command: 'lint:php:stan -- --no-progress',
-#            php: true,
-#            node: false,
-#          }
-#          - {
-#            name: '🅿️ Prettier',
-#            command: 'lint:prettier',
-#            php: false,
-#            node: true,
-#          }
-#          - {
-#            name: '🏠 Rector',
-#            command: 'lint:rector -- --no-progress-bar --output-format=github',
-#            php: true,
-#            node: false,
-#          }
+    strategy:
+      fail-fast: false
+      matrix:
+        command:
+          - {
+            name: '🧽 Laravel Pint',
+            command: ./vendor/bin/pint,
+            php: true,
+            node: false,
+          }
+          - {
+            name: '🔍 PHPStan',
+            command: 'lint:php:stan -- --no-progress',
+            php: true,
+            node: false,
+          }
+          - {
+            name: '🅿️ Prettier',
+            command: 'lint:prettier',
+            php: false,
+            node: true,
+          }
+          - {
+            name: '🏠 Rector',
+            command: 'lint:rector -- --no-progress-bar --output-format=github',
+            php: true,
+            node: false,
+          }
 
     steps:
       - name: '🛎 Checkout'
@@ -80,10 +80,10 @@ jobs:
           use-node: ${{ matrix.command.node }}
 
       - name: '${{ matrix.command.name }} validate'
-        run: task ${{ matrix.command.command }}
+        run: ${{ matrix.command.command }}
 
-  test:
-    name: '♻️ Test | ${{ matrix.command.name }}'
+  tests:
+    name: '♻️ Tests | ${{ matrix.command.name }}'
     runs-on: ubuntu-latest
 
     services:
@@ -105,9 +105,8 @@ jobs:
       fail-fast: false
       matrix:
         command:
-          - { name: '🧬 Feature', command: 'test:feature' }
-          - { name: '🔬 Unit',    command: 'test:unit' }
-          - { name: '🦠 Mutate',  command: 'test:mutate' }
+          - { name: '🧬 Pest', command: 'php artisan test --parallel' }
+          - { name: '🦠 Mutate',  command: 'php artisan test --mutate --covered-only --parallel' }
 
     steps:
       - name: '🛎 Checkout'
@@ -117,24 +116,24 @@ jobs:
         uses: ./.github/actions/setup-testing
 
       - name: '${{ matrix.command.name }} tests'
-        run: task ${{ matrix.command.command }}
+        run: ${{ matrix.command.command }}
         env:
           DB_HOST: 127.0.0.1
           DB_DATABASE: testing
           DB_USERNAME: db
           DB_PASSWORD: db
 
-      - name: '☂️ Upload results to Codecov'
-        uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          slug: maks-oleksyuk/notes
-          flags: ${{ matrix.command.name }}
-          directory: ./var/report
-
-      - name: '☂️ Upload test results to Codecov'
-        uses: codecov/test-results-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          flags: ${{ matrix.command.name }}
-          directory: ./var/report
+#      - name: '☂️ Upload results to Codecov'
+#        uses: codecov/codecov-action@v5
+#        with:
+#          token: ${{ secrets.CODECOV_TOKEN }}
+#          slug: maks-oleksyuk/notes
+#          flags: ${{ matrix.command.name }}
+#          directory: ./var/report
+#
+#      - name: '☂️ Upload test results to Codecov'
+#        uses: codecov/test-results-action@v1
+#        with:
+#          token: ${{ secrets.CODECOV_TOKEN }}
+#          flags: ${{ matrix.command.name }}
+#          directory: ./var/report
