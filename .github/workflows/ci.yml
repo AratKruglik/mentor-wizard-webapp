@@ -50,6 +50,11 @@ jobs:
         with:
           path: vendor
           key: composer-vendor
+      - name: Upload vendor artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: composer-vendor
+          path: vendor
 
   yarn-dependencies:
     runs-on: ubuntu-latest
