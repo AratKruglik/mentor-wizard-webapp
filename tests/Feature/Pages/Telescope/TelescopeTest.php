@@ -67,4 +67,4 @@ describe('Telescope Page', function () {
                 ->exists())->toBeTrue();
     });
 
-})->skip('temporarily to run it on CI');
+})->skip(app()->environment() === 'ci', 'temporarily to run it on CI');
