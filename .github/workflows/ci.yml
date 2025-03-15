@@ -1,4 +1,4 @@
-name: '🔄 CI | 🧰 Laravel'
+name: '🔄 CI | 🪄 Mentor Wizard'
 
 on:
   push:
@@ -6,7 +6,6 @@ on:
       - develop
     paths-ignore:
       - README.md
-      - LICENSE.md
   pull_request:
     branches:
       - develop
@@ -46,7 +45,7 @@ jobs:
         command:
           - {
             name: '🧽 Laravel Pint',
-            command: './vendor/bin/pint',
+            command: 'pint',
             php: true,
             node: false,
           }
