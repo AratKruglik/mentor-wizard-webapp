@@ -63,6 +63,7 @@ class PhpstanToGitlab extends Command
         File::put($outputFile, json_encode($gitlabReport, JSON_PRETTY_PRINT));
 
         $this->info("GitLab Code Quality report generated: {$outputFile}");
+        $this->info("GitLab Code Quality report generated: {$outputFile}");
 
         return SymfonyCommand::SUCCESS;
     }
