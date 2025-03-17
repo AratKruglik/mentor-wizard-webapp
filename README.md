@@ -1,6 +1,6 @@
-![Release](https://img.shields.io/github/v/release/AratKruglik/mentor-wizard-webapp)
-![Build](https://github.com/AratKruglik/mentor-wizard-webapp/actions/workflows/ci.yml/badge.svg)
-![Contributors](https://img.shields.io/github/contributors/AratKruglik/mentor-wizard-webapp)
+![Release](https://img.shields.io/github/v/release/Mentor-Wizard/mentor-wizard-webapp)
+![Build](https://github.com/Mentor-Wizard/mentor-wizard-webapp/actions/workflows/ci.yml/badge.svg)
+![Contributors](https://img.shields.io/github/contributors/Mentor-Wizard/mentor-wizard-webapp)
 
 
 # Mentor Wizard
