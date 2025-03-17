@@ -1,6 +1,3 @@
-[![coverage report](https://gitlab.com/mentor-wizard/mentor-wizard-webapp/badges/develop/coverage.svg)](https://gitlab.com/mentor-wizard/mentor-wizard-webapp/-/commits/develop)
-[![pipeline status](https://gitlab.com/mentor-wizard/mentor-wizard-webapp/badges/develop/pipeline.svg)](https://gitlab.com/mentor-wizard/mentor-wizard-webapp/-/commits/develop) [![Latest Release](https://gitlab.com/mentor-wizard/mentor-wizard-webapp/-/badges/release.svg)](https://gitlab.com/mentor-wizard/mentor-wizard-webapp/-/releases)
-
 # Mentor Wizard
 
 Mentor Wizard - це сучасний веб-застосунок, розроблений на базі фреймворку Laravel, що виконує управління менторами та студентами для освіти, наповнений функціоналом сучасного веб-додатка.
@@ -23,7 +20,7 @@ Mentor Wizard - це сучасний веб-застосунок, розроб�
 Склонуйте репозиторій проєкту:
 
 ```bash
-git clone git@gitlab.com:mentor-wizard/mentor-wizard-webapp.git
+git clone git@github.com:AratKruglik/mentor-wizard-webapp.git
 cd mentor-wizard-webapp
 ```
 
@@ -204,8 +201,7 @@ docker compose exec app php artisan test --mutate --covered-only --min=100 --par
 .validate-branch-namerc.json
 ```
 Автовалідація імен гілок Git перед пушем їх у віддалений репозиторій
-[validate-branch-name](https://www.npmjs.com/package/validate-branch-name
-) package
+[validate-branch-name](https://www.npmjs.com/package/validate-branch-name) package
 
 ### Конвенція для комітів
 Кожне повідомлення коміту має відповідати [конвенції комітів](https://www.conventionalcommits.org/).
