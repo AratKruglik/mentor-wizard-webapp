@@ -43,7 +43,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'project' => [
                 'name' => config('app.name'),
-            ]
+            ],
         ];
     }
 }
