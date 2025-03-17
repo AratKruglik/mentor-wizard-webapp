@@ -30,7 +30,7 @@
               <transition enter-active-class="transition ease-out duration-200" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
                 <MenuItems class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5 focus:outline-hidden">
                   <MenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }">
-                    <Link :href="item.href" :method="item.method ?? 'get'" :class="[active ? 'bg-gray-100 outline-hidden' : '', 'block px-4 py-2 text-sm text-gray-700']">{{ item.name }}</Link>
+                    <Link :href="item.href" :method="item.method ?? 'get'" :class="[active ? 'bg-gray-100 outline-hidden' : '', 'block px-4 py-2 text-sm text-gray-700 w-full text-left']">{{ item.name }}</Link>
                   </MenuItem>
                 </MenuItems>
               </transition>
@@ -105,19 +105,12 @@ import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuIt
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 import {Link} from "@inertiajs/vue3";
+import {useNavigation} from "@/Stores/navigation.js";
 
 const user = {
   imageUrl:
       'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
 }
-const navigation = [
-  { name: 'Dashboard', href: route('pages.welcome'), current: true },
-  { name: 'Team', href: '#', current: false },
-  { name: 'Projects', href: '#', current: false },
-  { name: 'Calendar', href: '#', current: false },
-]
-const userNavigation = [
-  { name: 'Your Profile', href:route('profile.edit')  },
-  { name: 'Sign out', href: route('logout'), method: 'post'},
-]
+
+const {authenticatedNavigation: navigation, userNavigation} = useNavigation()
 </script>

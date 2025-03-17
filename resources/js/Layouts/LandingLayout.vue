@@ -77,13 +77,8 @@ import {Dialog, DialogPanel} from '@headlessui/vue'
 import {Bars3Icon, XMarkIcon,} from '@heroicons/vue/24/outline'
 import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 import {Link} from "@inertiajs/vue3";
-
-const navigation = [
-  {name: 'Product', href: '#'},
-  {name: 'Features', href: '#'},
-  {name: 'Marketplace', href: '#'},
-  {name: 'Company', href: '#'},
-]
+import {useNavigation} from "@/Stores/navigation.js";
 
 const mobileMenuOpen = ref(false)
+const {landingNavigation: navigation} = useNavigation()
 </script>
