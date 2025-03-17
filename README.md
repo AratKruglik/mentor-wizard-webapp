@@ -1,3 +1,8 @@
+![Release](https://img.shields.io/github/v/release/AratKruglik/mentor-wizard-webapp)
+![Build](https://github.com/AratKruglik/mentor-wizard-webapp/actions/workflows/ci.yml/badge.svg)
+![Contributors](https://img.shields.io/github/contributors/AratKruglik/mentor-wizard-webapp)
+
+
 # Mentor Wizard
 
 Mentor Wizard - це сучасний веб-застосунок, розроблений на базі фреймворку Laravel, що виконує управління менторами та студентами для освіти, наповнений функціоналом сучасного веб-додатка.
