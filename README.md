@@ -25,7 +25,7 @@ Mentor Wizard - це сучасний веб-застосунок, розроб�
 Склонуйте репозиторій проєкту:
 
 ```bash
-git clone git@github.com:AratKruglik/mentor-wizard-webapp.git
+git clone git@github.com:Mentor-Wizard/mentor-wizard-webapp.git
 cd mentor-wizard-webapp
 ```
 
