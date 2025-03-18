@@ -1,6 +1,6 @@
 codecov:
   require_ci_to_pass: true
-  token: 9d2b4ff5-3d84-42c3-99bd-5216cab070e6
+  token: 8b2d6096-c928-4756-b4de-0e914fe680cf
 
 comment:
   layout: "reach, diff, flags, files"
