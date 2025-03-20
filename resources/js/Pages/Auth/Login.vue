@@ -98,13 +98,13 @@ const submit = () => {
       <div class="mt-6 grid grid-cols-2 gap-4">
         <a :href="route('auth.socialite.redirect', { driver: 'google' })"
           class="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50 focus-visible:ring-transparent">
-          <GoogleLogo class="h-8 w-auto" />
+          <GoogleLogo class="w-auto" />
           <span class="text-sm/6 font-semibold">Google</span>
         </a>
 
         <a :href="route('auth.socialite.redirect', { driver: 'github' })"
           class="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50 focus-visible:ring-transparent">
-          <GithubLogo class="h-8 w-auto" />
+          <GithubLogo class="w-auto" />
           <span class="text-sm/6 font-semibold">Github</span>
         </a>
       </div>
