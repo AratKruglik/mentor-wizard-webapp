@@ -1,12 +1,12 @@
 <script setup>
-import Checkbox from "@/Components/Checkbox.vue";
+import Checkbox from "@/Components/UI/Forms/Checkbox.vue";
 import GuestLayout from "@/Layouts/GuestLayout.vue";
-import InputError from "@/Components/InputError.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import TextInput from "@/Components/TextInput.vue";
-import GithubLogo from "@/Components/Logo/GithubLogo.vue";
-import GoogleLogo from "@/Components/Logo/GoogleLogo.vue";
+import InputError from "@/Components/UI/Forms/InputError.vue";
+import InputLabel from "@/Components/UI/Forms/InputLabel.vue";
+import PrimaryButton from "@/Components/UI/Forms/PrimaryButton.vue";
+import TextInput from "@/Components/UI/Forms/TextInput.vue";
+import GithubLogo from "@/Components/UI/Logo/GithubLogo.vue";
+import GoogleLogo from "@/Components/UI/Logo/GoogleLogo.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 
 defineProps({
@@ -39,11 +39,12 @@ const submit = () => {
     <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
       {{ status }}
     </div>
+
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
       <h2 class="mt-6 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Log in to your account</h2>
     </div>
 
-    <div class="mt-5 sm:mx-auto sm:w-full sm:max-w-[480px]">
+    <div class="mt-3 sm:mx-auto sm:w-full sm:max-w-[480px]">
       <form @submit.prevent="submit">
         <div>
           <InputLabel for="email" value="Email" />
@@ -70,23 +71,27 @@ const submit = () => {
             </div>
             <label for="remember-me" class="block text-sm/6 text-gray-900">Remember me</label>
           </div>
-
-          <div class="text-sm/6">
-            <Link v-if="canResetPassword" :href="route('password.request')"
-              class="font-semibold text-indigo-600 hover:text-indigo-500">
-            Forgot your password?
-            </Link>
-          </div>
         </div>
 
-        <div class="mt-6">
+        <div class="mt-5">
           <PrimaryButton :class="{ 'opacity-25 cursor-not-allowed': form.processing }" :disabled="form.processing">
             Log in
           </PrimaryButton>
         </div>
       </form>
 
-      <div class="relative mt-10">
+      <div class="grid grid-flow-col gap-2 justify-center mt-5">
+        <Link v-if="canResetPassword" :href="route('register')"
+          class="rounded-full bg-white px-2.5 py-1 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50">
+        Haven't registered yet?
+        </Link>
+        <Link v-if="canResetPassword" :href="route('password.request')"
+          class="rounded-full bg-white px-2.5 py-1 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50">
+        Forgot your password?
+        </Link>
+      </div>
+
+      <div class="relative mt-8">
         <div class="absolute inset-0 flex items-center" aria-hidden="true">
           <div class="w-full border-t border-gray-200" />
         </div>
