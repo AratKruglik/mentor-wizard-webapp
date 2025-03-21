@@ -80,13 +80,13 @@ const submit = () => {
         </div>
       </form>
 
-      <div class="grid grid-flow-col gap-2 justify-center mt-5">
+      <div class="grid grid-flow-col gap-5 justify-center mt-5">
         <Link v-if="canResetPassword" :href="route('register')"
-          class="rounded-full bg-white px-2.5 py-1 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50">
+          class="text-sm font-semibold text-gray-600 underline hover:text-gray-900 rounded-md focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-4">
         Haven't registered yet?
         </Link>
         <Link v-if="canResetPassword" :href="route('password.request')"
-          class="rounded-full bg-white px-2.5 py-1 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50">
+          class="text-sm font-semibold text-gray-600 underline hover:text-gray-900 rounded-md focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-4">
         Forgot your password?
         </Link>
       </div>
